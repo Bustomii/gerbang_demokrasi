@@ -32,6 +32,7 @@
                                 <th>FOTO</th>
                                 <th>NAMA LENGKAP</th>
                                 <th><center>KOTA</th>
+                                <th><center>PERIODE</th>
                                 <th><center>NO URUT</th>
                                 <th>AKSI</th>
                                 </tr>
@@ -50,6 +51,7 @@
                                 <p><b>Wakil : <?= $value['nama_wakil'];?></b>
                                 </td>
                                 <td><center><?= $value['kabupaten'];?></td>
+                                <td><center><?= $value['periode'];?></td>
                                 <td><center><?= $value['no_urut'];?></td>
                                 <td><?= $value['id'];?></td>
                                 </tr>
@@ -60,6 +62,7 @@
                                 <th>FOTO</th>
                                 <th>NAMA LENGKAP</th>
                                 <th><center>KOTA</th>
+                                <th><center>PERIODE</th>
                                 <th><center>NO URUT</th>
                                 <th>AKSI</th>
                                 </tr>

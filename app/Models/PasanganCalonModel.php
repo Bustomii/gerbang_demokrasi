@@ -39,7 +39,11 @@ class PasanganCalonModel extends Model {
     } 
 
     public function getSuaraMasuk($where = ''){
-        return $this->db->query("select b.id_detail, b.id_pasangan, b.hasil_suara, d.foto as foto_ketua, d.nama_lengkap as nama_ketua, f.nama_lengkap as nama_wakil, f.foto as foto_wakil, b.created_at FROM suara a, detail_suara b, pasangan_calon c, nama_pasangan d, nama_pasangan f, calon_aktif e $where");   
+        return $this->db->query("select a.c4, b.id_detail, b.id_pasangan, b.hasil_suara, d.foto as foto_ketua, d.nama_lengkap as nama_ketua, f.nama_lengkap as nama_wakil, f.foto as foto_wakil, b.created_at FROM suara a, detail_suara b, pasangan_calon c, nama_pasangan d, nama_pasangan f, calon_aktif e $where");   
     } 
+
+    public function cekData($where = ''){
+        return $this->db->query("select * from suara $where");   
+    }
 
 }

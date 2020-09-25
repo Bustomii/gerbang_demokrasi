@@ -57,35 +57,46 @@ class PasanganCalonController extends ResourceController
             'total_suara'   => $jumlah_suara,
             'c4'            => $c4
         ];
-        //query tambah suara
-        $tambah_suara = $this->db->table('suara')->insert($suara);
-        $last_id = $this->db->insertID();
-        // $last_id = [16,16,16];
 
-        for ($x=0; $x<count($id_pasangan); $x++){
-            //Deklarasi colomn tabel detail suara
-            $detail_suara = [
-                'id_suara'      => $last_id,
-                'id_pasangan'   => $id_pasangan[$x],
-                'hasil_suara'   => $hasil_suara[$x]
-            ];
-            //query tambah detail suara
-            $tambah_detail_suara = $this->db->table('detail_suara')->insert($detail_suara);
-            
-        }
+        $cekData = $this->pasangan->cekData("WHERE id_panitia = '".$id_panitia."'")->getResult();
 
-        if ($tambah_suara != NULL && $tambah_detail_suara != NULL){
+        if($cekData!=NULL){
             $respon = array("error"=>false,
                 "response_code"=>200,
-                "message" =>"Suara Berhasil Ditambah");
+                "message" =>"Anda Sudah Memasukan Data");
+
+                return $this->respond($respon, 200);
+        }else{
+            //query tambah suara
+            $tambah_suara = $this->db->table('suara')->insert($suara);
+            $last_id = $this->db->insertID();
+            // $last_id = [16,16,16];
+
+            for ($x=0; $x<count($id_pasangan); $x++){
+                //Deklarasi colomn tabel detail suara
+                $detail_suara = [
+                    'id_suara'      => $last_id,
+                    'id_pasangan'   => $id_pasangan[$x],
+                    'hasil_suara'   => $hasil_suara[$x]
+                ];
+                //query tambah detail suara
+                $tambah_detail_suara = $this->db->table('detail_suara')->insert($detail_suara);
                 
-            return $this->respond($respon, 200);
-        } else {
-            $respon = array("error"=>true,
-                "response_code"=>400,
-                "message" =>"Suara Gagal Ditambah");
-                
-            return $this->respond($respon, 400);
+            }
+
+            if ($tambah_suara != NULL && $tambah_detail_suara != NULL){
+                $respon = array("error"=>false,
+                    "response_code"=>200,
+                    "message" =>"Suara Berhasil Ditambah");
+                    
+                return $this->respond($respon, 200);
+            } else {
+                $respon = array("error"=>true,
+                    "response_code"=>400,
+                    "message" =>"Suara Gagal Ditambah");
+                    
+                return $this->respond($respon, 400);
+            }
         }
 
     }
@@ -106,17 +117,19 @@ class PasanganCalonController extends ResourceController
             $output = array(
                 'id_detail'      => $x['id_detail'],
                 'id_pasangan'    => $x['id_pasangan'],
-                'hasil_suara'    => $x['hasil_suara'],
+                'suara_masuk'    => $x['hasil_suara'],
                 'foto_ketua'     => $x['foto_ketua'],
                 'foto_wakil'     => $x['foto_wakil'],
                 'nama_ketua'     => $x['nama_ketua'],
-                'nama_wakil'     => $x['nama_wakil'],
+                'nama_wakil'     => $x['nama_wakil']
             );
             array_push($push, $output);
         }
+        
         if($data!=NULL){
             return $this->respond(array("error"=>false,
             "response_code"=>200,
+            "c4"=>$x['c4'],
             "records" =>$push), 200);
         }else{
             return $this->respond(array("error"=>false,
@@ -131,12 +144,12 @@ class PasanganCalonController extends ResourceController
         $id_panitia   = $this->request->getPost('username');
         $password = $this->request->getPost('password');
 
-        $data = $this->pasangan->cekPanitia("WHERE username = '".$id_panitia."' AND password = MD5('".$password."')");
-        foreach ($data->getResult() as $x);
+        $data = $this->pasangan->cekPanitia("WHERE username = '".$id_panitia."' AND password = MD5('".$password."')")->getResult();
+        if($data!=NULL){
+        foreach ($data as $x);
             $id_panitiaa = $x->username;
             $passwordd = $x->password;
-        
-        if ($id_panitiaa!=NULL){
+
             $respon = array("error"=>false,
                 "response_code"=>200,
                 "message" =>"Login Berhasil",
