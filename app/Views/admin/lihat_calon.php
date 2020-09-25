@@ -31,7 +31,7 @@
                                 <tr>
                                 <th>FOTO</th>
                                 <th>NAMA LENGKAP</th>
-                                <th><center>KOTA</th>
+                                <th><center>KOTA/KABUPATEN</th>
                                 <th><center>PERIODE</th>
                                 <th><center>NO URUT</th>
                                 <th>AKSI</th>
@@ -46,9 +46,9 @@
                                    }else{ echo '<img src="'.$value['foto_ketua'].'" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
                                     style="opacity: .8">';};?></td>
                                 <td>
-                                <b>Ketua : <?= $value['nama_ketua'];?></b>
+                                <b>Walikota : <?= $value['nama_ketua'];?></b>
                                 <p>
-                                <p><b>Wakil : <?= $value['nama_wakil'];?></b>
+                                <p><b>Wakil Walikota : <?= $value['nama_wakil'];?></b>
                                 </td>
                                 <td><center><?= $value['kabupaten'];?></td>
                                 <td><center><?= $value['periode'];?></td>
@@ -61,7 +61,7 @@
                                 <tr>
                                 <th>FOTO</th>
                                 <th>NAMA LENGKAP</th>
-                                <th><center>KOTA</th>
+                                <th><center>KOTA/KABUPATEN</th>
                                 <th><center>PERIODE</th>
                                 <th><center>NO URUT</th>
                                 <th>AKSI</th>
