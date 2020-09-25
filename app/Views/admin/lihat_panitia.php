@@ -31,28 +31,41 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                <th>FOTO</th>
+                                <th><center>FOTO</th>
+                                <th>USERNAME</th>
                                 <th>NAMA LENGKAP</th>
                                 <th>WILAYAH</th>
-                                <th>NO TPS</th>
+                                <th><center>NO TPS</th>
                                 <th>AKSI</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <?php foreach($data as $value){  ?>
                                 <tr>
-                                <td>Other browsers</td>
-                                <td>All others</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>U</td>
+                                <td><center><?php if($value['foto']==NULL){
+                                   echo '<img src="images/user.png" width="120px" height="120px" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                                   style="opacity: .8">';
+                                   }else{ echo '<img src="'.$value['foto'].'" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                                    style="opacity: .8">';};?></td>
+                                <td><?= $value['username'];?></td>
+                                <td><?= $value['nama_lengkap'];?></td>
+                                <td>
+                                Kelurahan : <?= ucwords($value['kelurahan']);?>
+                                <p>Kecamatan : <?= ucwords($value['kecamatan']);?>
+                                <p>Kabupaten : <?= ucwords($value['kabupaten']);?>
+                                </td>
+                                <td><center><?= $value['no_tps'];?></td>
+                                <td><?= $value['id_panitia'];?></td>
                                 </tr>
+                                <?php }?>
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                <th>FOTO</th>
+                                <th><center>FOTO</th>
+                                <th>USERNAME</th>
                                 <th>NAMA LENGKAP</th>
                                 <th>WILAYAH</th>
-                                <th>NO TPS</th>
+                                <th><center>NO TPS</th>
                                 <th>AKSI</th>
                                 </tr>
                                 </tfoot>

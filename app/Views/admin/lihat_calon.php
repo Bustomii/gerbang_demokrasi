@@ -31,26 +31,36 @@
                                 <tr>
                                 <th>FOTO</th>
                                 <th>NAMA LENGKAP</th>
-                                <th>KOTA</th>
-                                <th>NO URUT</th>
+                                <th><center>KOTA</th>
+                                <th><center>NO URUT</th>
                                 <th>AKSI</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <?php foreach($data as $value){  ?>
                                 <tr>
-                                <td>Other browsers</td>
-                                <td>All others</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>U</td>
+                                <td><center><?php if($value['foto_ketua']==NULL){
+                                   echo '<img src="images/user.png" width="70px" height="70px" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                                   style="opacity: .8">';
+                                   }else{ echo '<img src="'.$value['foto_ketua'].'" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                                    style="opacity: .8">';};?></td>
+                                <td>
+                                <b>Ketua : <?= $value['nama_ketua'];?></b>
+                                <p>
+                                <p><b>Wakil : <?= $value['nama_wakil'];?></b>
+                                </td>
+                                <td><center><?= $value['kabupaten'];?></td>
+                                <td><center><?= $value['no_urut'];?></td>
+                                <td><?= $value['id'];?></td>
                                 </tr>
+                                <?php }?>
                                 </tbody>
                                 <tfoot>
                                 <tr>
                                 <th>FOTO</th>
                                 <th>NAMA LENGKAP</th>
-                                <th>KOTA</th>
-                                <th>NO URUT</th>
+                                <th><center>KOTA</th>
+                                <th><center>NO URUT</th>
                                 <th>AKSI</th>
                                 </tr>
                                 </tfoot>

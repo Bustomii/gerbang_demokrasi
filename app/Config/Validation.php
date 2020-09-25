@@ -30,6 +30,12 @@ class Validation
 		'single' => 'CodeIgniter\Validation\Views\single',
 	];
 
+	public $error_tambah_suara = [
+		'error'=>false,
+		'response_code'=>400,
+		'message' =>'Suara Gagal Ditambah'
+	];
+
 	//--------------------------------------------------------------------
 	// Rules
 	//--------------------------------------------------------------------

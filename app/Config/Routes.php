@@ -33,7 +33,21 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'AdminControllers::index');
 $routes->get('/admin', 'AdminControllers::dashboard');
 $routes->get('/pasangan_calon', 'AdminControllers::calonPasangan');
+$routes->get('/tambah_calon', 'AdminControllers::tambahCalon');
 $routes->get('/panitia', 'AdminControllers::panitia');
+$routes->get('/suara', 'AdminControllers::suara');
+$routes->get('/generate', 'AdminControllers::generate');
+$routes->post('/create_panitia', 'AdminControllers::createPanitia');
+
+$routes->get('/pasangancalon/(:segment)', 'PasanganCalonController::pasanganCalon/$1');
+$routes->post('/suara', 'PasanganCalonController::kirimSuara');
+$routes->post('/login', 'PasanganCalonController::Login');
+$routes->get('/detail/(:segment)', 'PasanganCalonController::detailPanitia/$1');
+$routes->get('/getsuara/(:segment)', 'PasanganCalonController::getSuara/$1');
+
+//mencoba
+// $routes->post('/loginn', 'PasanganCalonController::cekLogin');
+// $routes->resource('pasangancalon');
 
 /**
  * --------------------------------------------------------------------

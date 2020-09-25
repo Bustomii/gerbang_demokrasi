@@ -91,3 +91,22 @@
     });
   });
 </script>
+
+<script type="text/javascript">
+        $(function(){
+          $("#datepicker1").datepicker({
+              format: 'yyyy-mm-dd',
+              autoclose: true,
+              todayHighlight: true,
+          });
+        });
+        </script>
+      <script type="text/javascript">
+        $(function(){
+          $("#datepicker2").datepicker({
+              format: 'yyyy-mm-dd',
+              autoclose: true,
+              todayHighlight: true,
+          });
+        });
+</script>
