@@ -238,7 +238,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="/panitia" class="nav-link">
+            <a href="/suara" class="nav-link">
               <i class="nav-icon fas fa-volume-up"></i>
               <p>
                 Suara

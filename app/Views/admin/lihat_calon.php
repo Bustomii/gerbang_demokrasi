@@ -43,7 +43,8 @@
                                 <td><center><?php if($value['foto_ketua']==NULL){
                                    echo '<img src="images/user.png" width="70px" height="70px" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
                                    style="opacity: .8">';
-                                   }else{ echo '<img src="'.$value['foto_ketua'].'" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+                                   }else{ echo '<img src="'.$value['foto_ketua'].'" width="120px" height="120px" class="brand-image img-circle elevation-3"
+                                    style="opacity: .8"><img src="'.$value['foto_wakil'].'" width="120px" height="120px" class="brand-image img-circle elevation-3"
                                     style="opacity: .8">';};?></td>
                                 <td>
                                 <b>Walikota : <?= $value['nama_ketua'];?></b>

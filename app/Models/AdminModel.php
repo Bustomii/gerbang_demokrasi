@@ -25,4 +25,8 @@ class AdminModel extends Model {
         return $this->db->table('panitia')->insert($colomn);
     }
 
+    function dataSuara($where  = ''){
+        return $this->db->query("select f.*, a.*, b.nama as kabupaten, c.nama as kecamatan, d.nama as kelurahan, e.nama as provinsi from panitia a, wilayah b, wilayah c, wilayah d, wilayah e, suara f  $where");   
+    }
+
 }

@@ -43,7 +43,14 @@ class PasanganCalonModel extends Model {
     } 
 
     public function cekData($where = ''){
-        return $this->db->query("select * from suara $where");   
+        return $this->db->query("select * from suara a, detail_suara b $where");   
     }
 
+    public function updateSuara($where = ''){
+        return $this->db->query("update suara $where");
+    }
+
+    public function updateDetailSuara($where = ''){
+        return $this->db->query("update detail_suara $where");
+    }
 }
