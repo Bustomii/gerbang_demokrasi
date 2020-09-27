@@ -29,36 +29,40 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                 <tr>
-                                <th>TANGGAL</th>
-                                <th>DETAIL TPS</th>
-                                <th><center>SUARA MASUK</th>
-                                <th><center>STATUS</th>
-                                <th><center>AKSI</th>
+                                  <th>TANGGAL</th>
+                                  <th>DETAIL TPS</th>
+                                  <th><center>SUARA MASUK</th>
+                                  <th><center>STATUS</th>
+                                  <th><center>AKSI</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <?php foreach($data as $value){  ?>
                                 <tr>
-                                <td><?= $value['updated_at'] ?></td>
-                                <td>Provinsi : <?= $value['provinsi'] ?>
-                                <p>Kabupaten : <?= $value['kabupaten'] ?>
-                                <p>Kecamatan : <?= $value['kecamatan'] ?>
-                                <p>Kelurahan : <?= $value['kelurahan'] ?>
-                                <p>No TPS : <?= $value['no_tps'] ?></td>
-                                <td><center><?= $value['total_suara'] ?></td>
-                                <td><center><?php if ($value['status']==0) {echo '<span class="badge bg-danger">Belum Validasi</span>';}else{echo '<span class="badge bg-success">Validasi</span>';}?></td>
-                                <td><center><a href='/suara/<?= $value['id_suara'] ?>'><span><button type="button" class="btn btn-success">Detail</button></span>
-                                <a href='/suara/<?= $value['id_suara'] ?>'><span><button type="button" class="btn btn-danger"><span class="fas fa-trash-alt"></span></button></span></td>
+                                  <td><?= $value['updated_at'] ?></td>
+                                  <td>Panitia : <?= $value['username'] ?><p>
+                                  <p>Provinsi : <?= $value['provinsi'] ?>
+                                  <p>Kabupaten : <?= $value['kabupaten'] ?>
+                                  <p>Kecamatan : <?= $value['kecamatan'] ?>
+                                  <p>Kelurahan : <?= $value['kelurahan'] ?>
+                                  <p>No TPS : <?= $value['no_tps'] ?></td>
+                                  <td><center><?= $value['total_suara'] ?></td>
+                                  <td><center><?php if ($value['status']==0) {echo '<span class="badge bg-danger">Belum Validasi</span>';}else{echo '<span class="badge bg-success">Validasi</span>';}?></td>
+                                  <td><center>
+                                      <a href='/suara/<?= $value['id_suara'] ?>'><span><button title="Detail" type="button" class="btn btn-primary"><span class="fas fa-eye"></span></button></span>
+                                      <a href='/suara/<?= $value['id_suara'] ?>'><span><button title="Validasi" type="button" class="btn btn-success"><span class="fas fa-check"></span></button></span>
+                                      <a href='/suara/<?= $value['id_suara'] ?>'><span><button title="Hapus" type="button" class="btn btn-danger"><span class="fas fa-trash-alt"></span></button></span>
+                                      </td>
                                 </tr>
                                 <?php }?>
                                 </tbody>
                                 <tfoot>
                                 <tr>
-                                <th>TANGGAL</th>
-                                <th>DETAIL TPS</th>
-                                <th><center>SUARA MASUK</th>
-                                <th><center>STATUS</th>
-                                <th><center>AKSI</th>
+                                  <th>TANGGAL</th>
+                                  <th>DETAIL TPS</th>
+                                  <th><center>SUARA MASUK</th>
+                                  <th><center>STATUS</th>
+                                  <th><center>AKSI</th>
                                 </tr>
                                 </tfoot>
                             </table>

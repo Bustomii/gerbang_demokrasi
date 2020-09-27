@@ -1,17 +1,17 @@
 <?php namespace App\Controllers;
 
-use App\Models\PasanganCalonModel;
+use App\Models\MobileModel;
 
 use CodeIgniter\RESTful\ResourceController;
  
-class PasanganCalonController extends ResourceController
+class MobileController extends ResourceController
 {
     protected $format       = 'json';
-    protected $modelName    = 'App\Models\PasanganCalonModel';
+    protected $modelName    = 'App\Models\MobileModel';
     function __construct() 
     {
         $this->db = db_connect();
-        $this->pasangan = new PasanganCalonModel();
+        $this->pasangan = new MobileModel(); 
     }
 
     public function pasanganCalon($id)
@@ -38,25 +38,57 @@ class PasanganCalonController extends ResourceController
         }else{
             return $this->respond(array("error"=>false,
             "response_code"=>400,
-            "message" =>"Tidak ada produk"), 400);
+            "message" =>"Tidak ada produk"), 200);
         }
     }
 
     public function kirimSuara(){
-        $validation =  \Config\Services::validation();
  
         $id_panitia   = $this->request->getPost('id_panitia');
         $c4 = $this->request->getPost('c4');
         $id_pasangan = $this->request->getPost('id_pasangan');
         $hasil_suara = $this->request->getPost('hasil_suara');
         
+        $suara_sah = $this->request->getPost('suara_sah');
+        $suara_tidak_sah = $this->request->getPost('suara_tidak_sah');
+        $DPT = $this->request->getPost('DPT');
+        $DPTb = $this->request->getPost('DPTb');
+        $DPTk = $this->request->getPost('DPTk');
+        $total_DPT = $this->request->getPost('total_DPT');
+        $pengguna_DPT = $this->request->getPost('pengguna_DPT');
+        $pengguna_DPTb = $this->request->getPost('pengguna_DPTb');
+        $pengguna_DPTk = $this->request->getPost('pengguna_DPTk');
+        $jumlah_pengguna = $this->request->getPost('jumlah_pengguna');
+        $disabilitas = $this->request->getPost('disabilitas');
+        $disabilitas_pemilih = $this->request->getPost('disabilitas_pemilih');
+        $total_surat_suara = $this->request->getPost('total_surat_suara');
+        $surat_suara_kembali = $this->request->getPost('surat_suara_kembali');
+        $surat_suara_sisa = $this->request->getPost('surat_suara_sisa');
+        $surat_suara_guna = $this->request->getPost('surat_suara_guna');
+        
         $jumlah_suara = array_sum($hasil_suara);
         //Deklarasi colomn tabel suara
         $suara = [
-            'id_panitia'    => $id_panitia,
-            'total_suara'   => $jumlah_suara,
-            'c4'            => $c4,
-            'status'        => 0
+            'id_panitia'            => $id_panitia,
+            'total_suara'           => $jumlah_suara,
+            'c4'                    => $c4,
+            'status'                => 0,
+            'suara_sah'             => $suara_sah,
+            'suara_tidak_sah'       => $suara_tidak_sah,
+            'DPT'                   => $DPT,
+            'DPTb'                  => $DPTb,
+            'DPTk'                  => $DPTk,
+            'total_DPT'             => $total_DPT,
+            'pengguna_DPT'          => $pengguna_DPT,
+            'pengguna_DPTb'         => $pengguna_DPTb,
+            'pengguna_DPTk'         => $pengguna_DPTk,
+            'jumlah_pengguna'       => $jumlah_pengguna,
+            'disabilitas'           => $disabilitas,
+            'disabilitas_pemilih'   => $disabilitas_pemilih,
+            'total_surat_suara'     => $total_surat_suara,
+            'surat_suara_kembali'   => $surat_suara_kembali,
+            'surat_suara_sisa'      => $surat_suara_sisa,
+            'surat_suara_guna'      => $surat_suara_guna 
         ];
 
         $cekData = $this->pasangan->cekData("WHERE a.id_suara = b.id_suara AND a.id_panitia = '".$id_panitia."'");
@@ -83,8 +115,27 @@ class PasanganCalonController extends ResourceController
             }
             else{
                 //query update suara
-                $update_suara = $this->pasangan->updateSuara('SET id_panitia = "'.$id_panitia.'", total_suara = "'.$jumlah_suara.'",
-                                                c4 = "'.$c4.'" WHERE id_suara = "'.$detailID['cekid'].'"');
+                $update_suara = $this->pasangan->updateSuara('SET 
+                id_panitia          = "'.$id_panitia.'", 
+                total_suara         = "'.$jumlah_suara.'",
+                c4                  = "'.$c4.'",
+                suara_sah           = "'.$suara_sah.'",
+                suara_tidak_sah     = "'.$suara_tidak_sah.'",
+                DPT                 = "'.$DPT.'",
+                DPTb                = "'.$DPTb.'",
+                DPTk                = "'.$DPTk.'",
+                total_DPT           = "'.$total_DPT.'",
+                pengguna_DPT        = "'.$pengguna_DPT.'",
+                pengguna_DPTb       = "'.$pengguna_DPTb.'",
+                pengguna_DPTk       = "'.$pengguna_DPTk.'",
+                jumlah_pengguna     = "'.$jumlah_pengguna.'",
+                disabilitas         = "'.$disabilitas.'",
+                disabilitas_pemilih = "'.$disabilitas_pemilih.'",
+                total_surat_suara   = "'.$total_surat_suara.'",
+                surat_suara_kembali = "'.$surat_suara_kembali.'",
+                surat_suara_sisa    = "'.$surat_suara_sisa.'",
+                surat_suara_guna    = "'.$surat_suara_guna.'" 
+                WHERE id_suara      = "'.$detailID['cekid'].'"');
 
                     //Update Data Array 
                     for ($x=0; $x<count($detail_id); $x++){  
@@ -105,7 +156,7 @@ class PasanganCalonController extends ResourceController
                         "response_code"=>400,
                         "message" =>"Suara Gagal Update");
                         
-                    return $this->respond($respon, 400);
+                    return $this->respond($respon, 200);
                 }
             }
         }
@@ -141,7 +192,7 @@ class PasanganCalonController extends ResourceController
                     "response_code"=>400,
                     "message" =>"Suara Gagal Ditambah");
                     
-                return $this->respond($respon, 400);
+                return $this->respond($respon, 200);
             }
         }
 
@@ -175,12 +226,31 @@ class PasanganCalonController extends ResourceController
         if($data!=NULL){
             return $this->respond(array("error"=>false,
             "response_code"=>200,
-            "c4"=>$x['c4'],
+            "status"                => $x['status'],
+            "suara_sah"             => $x['suara_sah'],
+            "suara_tidak_sah"       => $x['suara_tidak_sah'],
+            "DPT"                   => $x['DPT'],
+            "DPTb"                  => $x['DPTb'],
+            "DPTk"                  => $x['DPTk'],
+            "total_DPT"             => $x['total_DPT'],
+            "pengguna_DPT"          => $x['pengguna_DPT'],
+            "pengguna_DPTb"         => $x['pengguna_DPTb'],
+            "pengguna_DPTk"         => $x['pengguna_DPTk'],
+            "jumlah_pengguna"       => $x['jumlah_pengguna'],
+            "disabilitas"           => $x['disabilitas'],
+            "disabilitas_pemilih"   => $x['disabilitas_pemilih'],
+            "total_surat_suara"     => $x['total_surat_suara'],
+            "surat_suara_kembali"   => $x['surat_suara_kembali'],
+            "surat_suara_sisa"      => $x['surat_suara_sisa'],
+            "surat_suara_guna"      => $x['surat_suara_guna'], 
+            "total_suara"           => $x['total_suara'],
+            "c4"                    => $x['c4'],
             "records" =>$push), 200);
         }else{
             return $this->respond(array("error"=>false,
             "response_code"=>400,
-            "message" =>"Tidak ada produk"), 400);
+            "status"    => -1,
+            "message" =>"Tidak ada produk"), 200);
         }
     }
 
@@ -189,23 +259,31 @@ class PasanganCalonController extends ResourceController
         $id_panitia   = $this->request->getPost('username');
         $password = $this->request->getPost('password');
 
-        $data = $this->pasangan->cekPanitia("WHERE username = '".$id_panitia."' AND password = MD5('".$password."') LIMIT 1");
-        if($data->getRow()==1){
+        $data = $this->pasangan->cekPanitia("WHERE username = '".$id_panitia."' LIMIT 1");
+        if($data->getRow()!=NULL){
         foreach ($data->getResult() as $x);
             $id_panitiaa = $x->username;
-            $passwordd = $x->password;
+            $md5 = $x->password;
 
+            if($password == substr($md5,-6,7)){
             $respon = array("error"=>false,
                 "response_code"=>200,
                 "message" =>"Login Berhasil",
                 "id_panitia"=> $id_panitiaa);    
                 
             return $this->respond($respon, 200); 
+            }else{
+                $respon = array("error"=>true,
+                    "response_code"=>400,
+                    "message" =>"Password Salah");    
+                    
+                return $this->respond($respon, 200);
+            } 
         }
         else {
             $respon = array("error"=>true,
                 "response_code"=>400,
-                "message" =>"Login Gagal");    
+                "message" =>"Username Salah");    
                 
             return $this->respond($respon, 200);
         }
@@ -241,7 +319,7 @@ class PasanganCalonController extends ResourceController
                 "response_code"=>400,
                 "message" =>"Tidak ada produk");    
                 
-            return $this->respond($respon, 400);
+            return $this->respond($respon, 200);
         }
     }
 }

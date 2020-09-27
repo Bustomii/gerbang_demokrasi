@@ -55,7 +55,11 @@
                                 <p>Kabupaten : <?= ucwords($value['kabupaten']);?>
                                 </td>
                                 <td><center><?= $value['no_tps'];?></td>
-                                <td><?= $value['id_panitia'];?></td>
+                                <td><center>
+                                      <a href='/panitia/<?= $value['id_panitia'] ?>'><span><button title="Detail" type="button" class="btn btn-primary"><span class="fas fa-eye"></span></button></span>
+                                      <a href='/panitia/<?= $value['id_panitia'] ?>'><span><button title="Validasi" type="button" class="btn btn-success"><span class="fas fa-check"></span></button></span>
+                                      <a href='/panitia/<?= $value['id_panitia'] ?>'><span><button title="Hapus" type="button" class="btn btn-danger"><span class="fas fa-trash-alt"></span></button></span>
+                                      </td>
                                 </tr>
                                 <?php }?>
                                 </tbody>
