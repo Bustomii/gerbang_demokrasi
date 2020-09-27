@@ -70,4 +70,3 @@
                             <!-- /.card-body -->
                         </div>
   <?= $this->endSection(); ?>
-  </div>
