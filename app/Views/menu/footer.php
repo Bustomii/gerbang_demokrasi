@@ -26,6 +26,8 @@
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- DatePicker add by fuad-->
+  <link rel="stylesheet" href="plugins/bootstrap-datepicker/css/bootstrap-datepicker.css">
 </head>
 
 <?= $this->include('menu/header'); ?>
@@ -77,7 +79,15 @@
 <!-- DataTables -->
 <script src="../../plugins/datatables/jquery.dataTables.js"></script>
 <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
-
+<!-- Datepicker -->
+<script src="plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<!-- Custom File -->
+<script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    bsCustomFileInput.init();
+  });
+</script>
 <script>
   $(function () {
     $("#example1").DataTable();
@@ -92,9 +102,10 @@
   });
 </script>
 
+<!-- Datepicker add by fuad -->
 <script type="text/javascript">
         $(function(){
-          $("#datepicker1").datepicker({
+          $("#tgl_lahir1").datepicker({
               format: 'yyyy-mm-dd',
               autoclose: true,
               todayHighlight: true,
@@ -103,7 +114,7 @@
         </script>
       <script type="text/javascript">
         $(function(){
-          $("#datepicker2").datepicker({
+          $("#tgl_lahir2").datepicker({
               format: 'yyyy-mm-dd',
               autoclose: true,
               todayHighlight: true,

@@ -29,4 +29,12 @@ class AdminModel extends Model {
         return $this->db->query("select f.*, a.*, b.nama as kabupaten, c.nama as kecamatan, d.nama as kelurahan, e.nama as provinsi from panitia a, wilayah b, wilayah c, wilayah d, wilayah e, suara f  $where");   
     }
 
+    // add createCalon by fuad
+    function createCalon($data1, $data2){
+        return $this->db->table('nama_pasangan')->insert($data1);
+        return $this->db->table('nama_pasangan')->insert($data2);
+   }
+
+    // end createCalon
+
 }
