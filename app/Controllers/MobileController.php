@@ -48,7 +48,6 @@ class MobileController extends ResourceController
         $c4 = $this->request->getPost('c4');
         $id_pasangan = $this->request->getPost('id_pasangan');
         $hasil_suara = $this->request->getPost('hasil_suara');
-        
         $suara_sah = $this->request->getPost('suara_sah');
         $suara_tidak_sah = $this->request->getPost('suara_tidak_sah');
         $DPT = $this->request->getPost('DPT');
@@ -65,8 +64,8 @@ class MobileController extends ResourceController
         $surat_suara_kembali = $this->request->getPost('surat_suara_kembali');
         $surat_suara_sisa = $this->request->getPost('surat_suara_sisa');
         $surat_suara_guna = $this->request->getPost('surat_suara_guna');
-        
-        $jumlah_suara = array_sum($hasil_suara);
+        $jumlah_suara = $this->request->getPost('total_suara');
+
         //Deklarasi colomn tabel suara
         $suara = [
             'id_panitia'            => $id_panitia,
@@ -134,17 +133,20 @@ class MobileController extends ResourceController
                 total_surat_suara   = "'.$total_surat_suara.'",
                 surat_suara_kembali = "'.$surat_suara_kembali.'",
                 surat_suara_sisa    = "'.$surat_suara_sisa.'",
-                surat_suara_guna    = "'.$surat_suara_guna.'" 
-                WHERE id_suara      = "'.$detailID['cekid'].'"');
+                surat_suara_guna    = "'.$surat_suara_guna.'",
+                updated_at          = CURRENT_TIMESTAMP
+                WHERE id_suara      = "'.$detailID['cekid'].'"'
+                );
 
                     //Update Data Array 
                     for ($x=0; $x<count($detail_id); $x++){  
                         //query update detail suara
-                        $update_detail_suara = $this->pasangan->updateDetailSuara('SET hasil_suara = "'.$hasil_suara[$x].'"
+                        $update_detail_suara = $this->pasangan->updateDetailSuara('SET 
+                        hasil_suara = "'.$hasil_suara[$x].'"
                         WHERE id_detail = "'.$detail_id[$x].'"');
                     }   
 
-                if ($update_suara != false && $update_detail_suara !=false){
+                if ($update_suara != false && $update_detail_suara != false){
                     $respon = array("error"=>false,
                         "response_code"=>200,
                         "message" =>"Suara Berhasil Diupdate");

@@ -26,7 +26,7 @@ class AdminModel extends Model {
     }
 
     function dataSuara($where  = ''){
-        return $this->db->query("select f.*, a.*, b.nama as kabupaten, c.nama as kecamatan, d.nama as kelurahan, e.nama as provinsi from panitia a, wilayah b, wilayah c, wilayah d, wilayah e, suara f  $where");   
+        return $this->db->query("select f.*, a.username, a.no_tps, b.nama as kabupaten, c.nama as kecamatan, d.nama as kelurahan, e.nama as provinsi from panitia a, wilayah b, wilayah c, wilayah d, wilayah e, suara f  $where");   
     }
 
     // add createCalon by fuad

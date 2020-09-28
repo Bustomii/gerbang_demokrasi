@@ -56,7 +56,17 @@ class AdminControllers extends BaseController
     
     public function suara()
 	{   
+<<<<<<< Updated upstream
         // $data = $this->adminmodel->dataSuara("")->getResultArray();
+=======
+        $kota_kab = 71;
+        $data = $this->adminmodel->dataSuara("WHERE concat(a.id_provinsi,'.',a.id_kab_kota) = b.kode 
+        AND concat(a.id_provinsi,'.',a.id_kab_kota,'.',a.id_kecamatan) = c.kode 
+        AND concat(a.id_provinsi,'.',a.id_kab_kota,'.',a.id_kecamatan,'.',a.id_kelurahan) = d.kode 
+        AND a.id_provinsi = e.kode AND a.username = f.id_panitia
+        AND a.id_kab_kota = '".$kota_kab."'
+        ORDER BY f.updated_at DESC")->getResultArray();
+>>>>>>> Stashed changes
         
         $active = 'suara';
         return view('admin/suara', [

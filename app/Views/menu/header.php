@@ -237,9 +237,15 @@
               </li>
             </ul>
           </li>
+          <?php if($active == 'suara'){ ?>
           <li class="nav-item">
+            <a href="/suara" class="nav-link active">
+              <i class="nav-icon fas fa-volume-up"></i>
+              <?php }else{ ?>
+            <li class="nav-item">
             <a href="/suara" class="nav-link">
               <i class="nav-icon fas fa-volume-up"></i>
+              <?php } ?>
               <p>
                 Suara
               </p>
