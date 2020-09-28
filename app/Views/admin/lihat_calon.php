@@ -8,12 +8,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>DATA CALON PASANGAN</h1>
+            <!-- <h1>DATA CALON PASANGAN</h1> -->
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">DataTables</li>
+              <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+              <li class="breadcrumb-item active">Data Calon Pasangan</li>
             </ol>
           </div>
         </div>
@@ -54,7 +54,11 @@
                                 <td><center><?= $value['kabupaten'];?></td>
                                 <td><center><?= $value['periode'];?></td>
                                 <td><center><?= $value['no_urut'];?></td>
-                                <td><?= $value['id'];?></td>
+                                <td><center>
+                                      <a href='/pasangan_calon/<?= $value['id'] ?>'><span><button title="Detail" type="button" class="btn btn-primary"><span class="fas fa-eye"></span></button></span>
+                                      <a href='/pasangan_calon/<?= $value['id'] ?>'><span><button title="Validasi" type="button" class="btn btn-success"><span class="fas fa-check"></span></button></span>
+                                      <a href='/pasangan_calon/<?= $value['id'] ?>'><span><button title="Hapus" type="button" class="btn btn-danger"><span class="fas fa-trash-alt"></span></button></span>
+                                      </td>
                                 </tr>
                                 <?php }?>
                                 </tbody>

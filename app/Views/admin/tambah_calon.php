@@ -25,8 +25,8 @@
       <!-- Horizontal Form -->
       <div class="card card-info">
         <div class="card-header">
-          <h3 class="card-title col-sm-6">Data Ketua</h3>
-          <h3 class="card-title col-sm-6 float-right">Data Wakil</h3>
+          <h3 class="card-title col-sm-6">Data Walikota</h3>
+          <h3 class="card-title col-sm-6 float-right">Data Wakil Walikota</h3>
         </div>
         <!-- /.card-header -->
         <!-- form start -->
@@ -102,8 +102,8 @@
                       <label class="col-sm-4 col-form-label">Alamat Rumah*</label>
                       <div class="col-sm-8">
                         <textarea required name="alamat_rumah1" id="alamat_rumah1" rows="4" style="width:100%"></textarea>
-                          <input required type="text" class="form-control" id="kecamatan1" name="kecamatan1" placeholder="Kecamatan" value=""><br>
-                          <input required type="text" class="form-control" id="kelurahan1" name="kelurahan1" placeholder="Kelurahan" value="">
+                          <!-- <input required type="text" class="form-control" id="kecamatan1" name="kecamatan1" placeholder="Kecamatan" value=""><br>
+                          <input required type="text" class="form-control" id="kelurahan1" name="kelurahan1" placeholder="Kelurahan" value=""> -->
                       </div>
                     </div>
                     <!-- input no.telepon/email -->
@@ -209,8 +209,8 @@
                           <label class="col-sm-4 col-form-label">Alamat Rumah*</label>
                           <div class="col-sm-8">
                             <textarea required name="alamat_rumah2" id="alamat_rumah2" rows="4" style="width:100%"></textarea>
-                            <input required type="text" class="form-control" id="kecamatan2" name="kecamatan2" placeholder="Kecamatan" value=""><br>
-                            <input required type="text" class="form-control" id="kelurahan2" name="kelurahan2" placeholder="Kelurahan" value="">
+                            <!-- <input required type="text" class="form-control" id="kecamatan2" name="kecamatan2" placeholder="Kecamatan" value=""><br>
+                            <input required type="text" class="form-control" id="kelurahan2" name="kelurahan2" placeholder="Kelurahan" value=""> -->
                           </div>
                         </div>
                         <div class="form-group row">
@@ -254,7 +254,18 @@
             <div class="col-md-12">
               <div class="card card-primary ">
                 <div class="card-body">
-
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Calon Pasangan No Urut*</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="no_urut" name="no_urut" placeholder="1/2/3/n" value="">
+                      </div>
+                    </div>
+                  <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Periode Pemilu*</label>
+                      <div class="col-sm-8">
+                        <input type="text" class="form-control" id="periode" name="periode" placeholder="Periode Pemilu" value="">
+                      </div>
+                  </div>
                 </div>
               </div>
             </div>
