@@ -9,7 +9,6 @@ class AdminControllers extends BaseController
 
     function __construct() {
         $this->adminmodel = new AdminModel();
-
 	}
 
 	public function index()
@@ -25,7 +24,9 @@ class AdminControllers extends BaseController
 
     public function calonPasangan()
 	{
-        $data = $this->adminmodel->dataPasanganCalon("WHERE concat(a.id_provinsi,'.',a.id_kab_kota) = b.kode AND a.id_pasangan = c.id_pasangan AND c.ketua = d.id_calon AND c.wakil = e.id_calon ORDER BY a.id_provinsi ASC")->getResultArray();
+        $kota_kab = 71;
+        $data = $this->adminmodel->dataPasanganCalon("WHERE concat(a.id_provinsi,'.',a.id_kab_kota) = b.kode AND a.id_pasangan = c.id_pasangan AND c.ketua = d.id_calon AND c.wakil = e.id_calon 
+        AND a.id_kab_kota = '".$kota_kab."' ORDER BY a.no_urut ASC")->getResultArray();
         $active = 'pasangan_calon';
         return view('admin/lihat_calon', [
             'active'    =>$active,
@@ -35,6 +36,7 @@ class AdminControllers extends BaseController
 
     public function tambahCalon()
 	{
+        $kota_kab = 71;
         // $data = $this->adminmodel->dataPasanganCalon("WHERE concat(a.id_provinsi,'.',a.id_kab_kota) = b.kode AND a.id_pasangan = c.id_pasangan AND c.ketua = d.id_calon AND c.wakil = e.id_calon ORDER BY a.id_provinsi ASC")->getResultArray();
         $active = 'tambah_calon';
         return view('admin/tambah_calon', [
@@ -45,7 +47,9 @@ class AdminControllers extends BaseController
     
     public function panitia()
 	{   
-        $data = $this->adminmodel->dataPanitia("WHERE concat(a.id_provinsi,'.',a.id_kab_kota) = b.kode AND concat(a.id_provinsi,'.',a.id_kab_kota,'.', a.id_kecamatan) = c.kode AND concat(a.id_provinsi,'.',a.id_kab_kota,'.', a.id_kecamatan,'.',a.id_kelurahan) = d.kode ORDER BY username ASC")->getResultArray();
+        $kota_kab = 71;
+        $data = $this->adminmodel->dataPanitia("WHERE concat(a.id_provinsi,'.',a.id_kab_kota) = b.kode AND concat(a.id_provinsi,'.',a.id_kab_kota,'.', a.id_kecamatan) = c.kode AND concat(a.id_provinsi,'.',a.id_kab_kota,'.', a.id_kecamatan,'.',a.id_kelurahan) = d.kode 
+        AND a.id_kab_kota = '".$kota_kab."' ORDER BY username ASC")->getResultArray();
         
         $active = 'panitia';
         return view('admin/lihat_panitia', [
@@ -54,11 +58,8 @@ class AdminControllers extends BaseController
             ]);
 	}
     
-    public function suara()
+    public function getSuara()
 	{   
-<<<<<<< Updated upstream
-        // $data = $this->adminmodel->dataSuara("")->getResultArray();
-=======
         $kota_kab = 71;
         $data = $this->adminmodel->dataSuara("WHERE concat(a.id_provinsi,'.',a.id_kab_kota) = b.kode 
         AND concat(a.id_provinsi,'.',a.id_kab_kota,'.',a.id_kecamatan) = c.kode 
@@ -66,17 +67,17 @@ class AdminControllers extends BaseController
         AND a.id_provinsi = e.kode AND a.username = f.id_panitia
         AND a.id_kab_kota = '".$kota_kab."'
         ORDER BY f.updated_at DESC")->getResultArray();
->>>>>>> Stashed changes
         
         $active = 'suara';
         return view('admin/suara', [
             'active'    =>$active,
-            // 'data'      =>$data,
+            'data'      =>$data,
             ]);
     }
 
     public function generate()
 	{   
+        $kota_kab = 71;
         $data = $this->adminmodel->generatePanitia("ORDER BY id_tps ASC")->getResultArray();
         
         $active = 'generate';
@@ -88,6 +89,7 @@ class AdminControllers extends BaseController
     
     public function createPanitia()
 	{   
+        $kota_kab = 71;
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
         
@@ -103,10 +105,9 @@ class AdminControllers extends BaseController
         if($insert)
         {
             session()->setFlashdata('success', 'Created product successfully');
-            return redirect()->to(base_url('product')); 
+            return redirect()->to(base_url('panitia')); 
         }
     }
-
     // add createCalon by fuad
     // Fungsi untuk validasi form tambah dan ubah
     // public function validation($mode){
@@ -216,5 +217,4 @@ class AdminControllers extends BaseController
         // $this->db->insert('nama_pasangan', $data2); // Untuk mengeksekusi perintah insert data
     }
     // end createCalon
-
 }

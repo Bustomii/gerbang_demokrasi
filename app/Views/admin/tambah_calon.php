@@ -246,12 +246,6 @@
                             </div>
                           </div>
                         </div>
-<<<<<<< Updated upstream
-=======
-                      </div>  
-                    </div>
-                  <!-- .copy end -->
->>>>>>> Stashed changes
                   </div>
               </div>  
             </div>
