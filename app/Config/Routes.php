@@ -49,6 +49,7 @@ $routes->get('/detail/(:segment)', 'MobileController::detailPanitia/$1');
 $routes->get('/getsuara/(:segment)', 'MobileController::getSuara/$1');
 
 //mencoba gagal
+$routes->post('/auth/login', 'AuthController::login');
 // $routes->post('/loginn', 'MobileController::cekLogin');
 // $routes->resource('pasangancalon');
 

@@ -1,9 +1,16 @@
 <?php namespace App\Controllers;
 
 use App\Models\MobileModel;
-
+use \Firebase\JWT\JWT;
+use App\Controllers\AuthController;
 use CodeIgniter\RESTful\ResourceController;
- 
+
+header("Access-Control-Allow-Origin: * ");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
 class MobileController extends ResourceController
 {
     protected $format       = 'json';
@@ -12,6 +19,7 @@ class MobileController extends ResourceController
     {
         $this->db = db_connect();
         $this->pasangan = new MobileModel(); 
+        $this->protect = new AuthController();
     }
 
     public function pasanganCalon($id)
@@ -293,35 +301,57 @@ class MobileController extends ResourceController
 
     public function detailPanitia($username){
         
-        $data = $this->pasangan->detailPanitia1("WHERE concat(a.id_provinsi,'.',a.id_kab_kota) = b.kode 
-        AND concat(a.id_provinsi,'.',a.id_kab_kota,'.',a.id_kecamatan) = c.kode 
-        AND concat(a.id_provinsi,'.',a.id_kab_kota,'.',a.id_kecamatan,'.',a.id_kelurahan) = d.kode 
-        AND a.id_provinsi = e.kode 
-        AND a.username = '".$username."'")->getResultArray();
-        foreach ($data as $x){
-            $output = array(
-                'username'          => $x['username'],
-                'no_tps'            => $x['no_tps'],
-                'provinsi'          => $x['provinsi'],
-                'kota_kabupaten'    => $x['kabupaten'],
-                'kecamatan'         => $x['kecamatan'],
-                'kelurahan'         => $x['kelurahan'],
-            );
-        } 
+        $secret_key = $this->protect->privateKey();
+        $token = null;
+        $authHeader = $this->request->getServer('HTTP_AUTHORIZATION');
+        $arr = explode(" ", $authHeader);
+        $token = $arr[1];
+        if($token){
+            try {
+                $decoded = JWT::decode($token, $secret_key, array('HS256'));
+                // Access is granted. Add code of the operation here 
+                if($decoded){
+        
+                    $data = $this->pasangan->detailPanitia1("WHERE concat(a.id_provinsi,'.',a.id_kab_kota) = b.kode 
+                    AND concat(a.id_provinsi,'.',a.id_kab_kota,'.',a.id_kecamatan) = c.kode 
+                    AND concat(a.id_provinsi,'.',a.id_kab_kota,'.',a.id_kecamatan,'.',a.id_kelurahan) = d.kode 
+                    AND a.id_provinsi = e.kode 
+                    AND a.username = '".$username."'")->getResultArray();
+                    foreach ($data as $x){
+                        $output = array(
+                            'username'          => $x['username'],
+                            'no_tps'            => $x['no_tps'],
+                            'provinsi'          => $x['provinsi'],
+                            'kota_kabupaten'    => $x['kabupaten'],
+                            'kecamatan'         => $x['kecamatan'],
+                            'kelurahan'         => $x['kelurahan'],
+                        );
+                    } 
 
-        if ($data!=NULL){
-            $respon = array("error"=>false,
-                "response_code"=>200,
-                "records"=> $output);    
-                
-            return $this->respond($respon, 200); 
-        }
-        else {
-            $respon = array("error"=>true,
-                "response_code"=>400,
-                "message" =>"Tidak ada produk");    
-                
-            return $this->respond($respon, 200);
+                    if ($data!=NULL){
+                        $respon = array("error"=>false,
+                            "response_code"=>200,
+                            "records"=> $output);    
+                            
+                        return $this->respond($respon, 200); 
+                    }
+                    else {
+                        $respon = array("error"=>true,
+                            "response_code"=>400,
+                            "message" =>"Tidak ada produk");    
+                            
+                        return $this->respond($respon, 200);
+                    }
+                }
+            }catch (\Exception $e){
+ 
+                $output = [
+                    'message' => 'Access denied',
+                    "error" => $e->getMessage()
+                ];
+         
+                return $this->respond($output, 401);
+            }
         }
     }
 }

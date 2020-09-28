@@ -6,7 +6,7 @@ use CodeIgniter\Model;
  
 class AuthModel extends Model{
  
-    protected $table = "users";
+    protected $table = "panitia";
  
     public function register($data)
     {
@@ -14,15 +14,15 @@ class AuthModel extends Model{
         return $query ? true : false;
     }
  
-    public function cek_login($email)
+    public function cek_login($username)
     {
         $query = $this->table($this->table)
-                ->where('email', $email)
+                ->where('username', $username)
                 ->countAll();
  
         if($query >  0){
             $hasil = $this->table($this->table)
-                    ->where('email', $email)
+                    ->where('username', $username)
                     ->limit(1)
                     ->get()
                     ->getRowArray();
