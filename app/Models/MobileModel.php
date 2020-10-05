@@ -5,7 +5,7 @@ use CodeIgniter\Model;
  
 class MobileModel extends Model {
 
-    protected $table = 'panitia';
+    protected $table = 'tps';
 
     public function getPasanganCalon($id = false)
     {
@@ -21,21 +21,14 @@ class MobileModel extends Model {
         from calon_aktif a, wilayah b, pasangan_calon c, nama_pasangan d, nama_pasangan e $where");   
     } 
 
+    //done
     public function cekPanitia($where = ''){
-        return $this->db->query("select * from panitia $where");   
+        return $this->db->query("select * from tps $where");   
     } 
-    
-    public function detailPanitia($id = false)
-    {
-        if($id == false){
-            return $this->findAll();
-        } else {
-            return $this->getWhere(['username' => $id])->getRowArray();
-        }
-    }
 
+    //Done
     public function detailPanitia1($where = ''){
-        return $this->db->query("select a.username, a.no_tps, b.nama as kabupaten, c.nama as kecamatan, d.nama as kelurahan, e.nama as provinsi from panitia a, wilayah b, wilayah c, wilayah d, wilayah e $where");   
+        return $this->db->query("select a.username, a.no_tps, a.dpt, b.nama as kabupaten, c.nama as kecamatan, d.nama as kelurahan, e.nama as provinsi from tps a, wilayah b, wilayah c, wilayah d, wilayah e $where");   
     } 
 
     public function getSuaraMasuk($where = ''){
@@ -46,11 +39,32 @@ class MobileModel extends Model {
         return $this->db->query("select * from suara a, detail_suara b $where");   
     }
 
+    //start update suara
     public function updateSuara($where = ''){
         return $this->db->query("update suara $where");
     }
 
     public function updateDetailSuara($where = ''){
         return $this->db->query("update detail_suara $where");
+    }
+
+    public function updateSuaraTemporary($where = ''){
+        return $this->db->query("update suara_temporary $where");
+    }
+
+    public function updateDetailSuaraTemporary($where = ''){
+        return $this->db->query("update detail_suara_temporary $where");
+    }
+    //end update suara
+    
+    //start Detail DPT
+    public function kecamatan($where = ''){
+        return $this->db->query("select a.id_kecamatan, b.nama as kecamata From kecamatan a, wilayah b $where");
+    }
+    public function kelurahan($where = ''){
+        return $this->db->query("select substr(kode,10,4) as id_kelurahan, nama as kelurahan From wilayah $where");
+    }
+    public function tps($where = ''){
+        return $this->db->query("select * From tps $where");
     }
 }

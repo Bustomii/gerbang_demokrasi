@@ -248,7 +248,7 @@ class App extends BaseConfig
 	public $CSRFCookieName = 'csrf_cookie_name';
 	public $CSRFExpire     = 7200;
 	public $CSRFRegenerate = true;
-	public $CSRFRedirect   = true;
+	public $CSRFRedirect   = false;
 
 	/*
 	|--------------------------------------------------------------------------

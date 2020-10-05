@@ -31,6 +31,7 @@
         <!-- /.card-header -->
         <!-- form start -->
         <form class="form-horizontal" action="<?php echo base_url('AdminControllers/save') ?>" method="POST">
+        <?= csrf_field() ?>
           <div class="card-body">
             <div class="row">
             <!-- left card -->

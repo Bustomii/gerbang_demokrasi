@@ -57,16 +57,17 @@ class AuthController extends ResourceController
                     "nbf" => $notbefore_claim,
                     "exp" => $expire_claim,
                     "data" => array(
-                        "id" => $cek_login['id_panitia'],
-                        "jeniskelamin" => $cek_login['jenis_kelamin'],
-                        "tanggal_lahir" => $cek_login['tanggal_lahir'],
-                        "username" => $cek_login['username'],
+                        "id" => $cek_login['id'],
+                        "dpt" => $cek_login['dpt'],
+                        "created_at" => $cek_login['created_at'],
+                        "updated_at" => $cek_login['updated_at'],
                         "password" => $cek_login['password'],
                         "id_provinsi" => $cek_login['id_provinsi'],
                         "id_kab_kota" => $cek_login['id_kab_kota'],
                         "id_kecamatan" => $cek_login['id_kecamatan'],
                         "id_kelurahan" => $cek_login['id_kelurahan'],
-                        "no_tps" => $cek_login['no_tps']
+                        "no_tps" => $cek_login['no_tps'],
+                        "username" => $cek_login['username']
                     )
                 );
     

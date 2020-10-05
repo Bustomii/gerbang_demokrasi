@@ -6,37 +6,50 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <!-- <h1 class="m-0 text-dark">Dashboard v2</h1> -->
-          </div>
-          <!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-    
     <!-- Main content -->
-    <section class="content">
       <div class="container-fluid">
+
+      <!-- content message -->
+      <?php if(session()->getFlashData('success')){ ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= session()->getFlashData('success') ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div><?php }?>
+        <!-- end message -->
+        
+        <div class="row mb-2">
+            <div class="col-12 col-sm-6 col-md-6">
+              <div class="info-box">
+                <button type="button" id="temporary"name ="temporary" class="info-box-icon bg-danger elevation-1 col-md-12"><i class="fas fa-calendar-alt"></i>
+                  <span class="info-box-text"> Hasil Perolehan Sementara</span></button>
+                <!-- /.info-box-content -->
+              </div>
+              <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
+            <div class="col-12 col-sm-6 col-md-6">
+              <div class="info-box mb-3">
+                <button type="button" id="hasil" name="hasil" class="info-box-icon bg-success elevation-1 col-md-12"><i class="fas fa-check"></i>
+                <span class="info-box-text"> Hasil Perolehan Final </span></button>
+                </div>
+                <!-- /.info-box-content -->
+              </div>
+              <!-- /.info-box -->
+            </div>
+            <!-- /.col -->
         <!-- Info boxes -->
+      <div class="temporary">
         <div class="row">
           <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box">
               <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
 
               <div class="info-box-content">
-                <span class="info-box-text">Total Suara Pemilih</span>
+                <span class="info-box-text">Total Daftar Pemilih Tetap</span>
                 <span class="info-box-number">
-                  10
-                  <small>%</small>
+                  <?= $total_dpt; ?>
                 </span>
               </div>
               <!-- /.info-box-content -->
@@ -49,8 +62,8 @@
               <span class="info-box-icon bg-success elevation-1"><i class="fas fa-check"></i></span>
 
               <div class="info-box-content">
-                <span class="info-box-text">Total Suara Masuk</span>
-                <span class="info-box-number">41,410</span>
+                <span class="info-box-text">Total Suara Sah</span>
+                <span class="info-box-number"><?php if($suara_sah==NULL){echo 0;}else{ echo $suara_sah;};?></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -67,7 +80,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Total Suara Rusak</span>
-                <span class="info-box-number">760</span>
+                <span class="info-box-number"><?php if($suara_rusak==NULL){echo 0;}else{ echo $suara_rusak;};?></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -76,11 +89,11 @@
           <!-- /.col -->
           <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
-              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-map"></i></span>
 
               <div class="info-box-content">
                 <span class="info-box-text">Total Tps</span>
-                <span class="info-box-number">2,000</span>
+                <span class="info-box-number"><?= $total_tps;?></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -117,50 +130,205 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-8">
-                    <div class="chart">
                       <!-- Sales Chart Canvas -->
-                      <canvas id="salesChart" height="500" style="height: 500px;"></canvas>
-                    </div>
+                      <canvas id="kpu-temporary" height="420" style="height: 420px;"></canvas>
                     <!-- /.chart-responsive -->
                   </div>
                   <!-- /.col -->
                   <div class="col-md-4">
                     <p class="text-center">
-                      <strong>Goal Completion</strong>
+                      <strong>SUARA MASUK</strong>
                     </p>
 
                     <div class="progress-group">
-                      Total Suara Pemilih
-                      <span class="float-right"><b>160</b>/200</span>
+                      Total Suara Masuk
+                      <span class="float-right"><b><?php if($suara_dpt==NULL){echo 0;}else{ echo $suara_dpt+$suara_sah;};?></b>/<?= $total_dpt; ?></span>
                       <div class="progress progress-sm">
-                        <div class="progress-bar bg-info" style="width: 80%"></div>
+                        <div class="progress-bar bg-info" style="width:  <?php if($suara_dpt==NULL){echo 0/$total_dpt*100;}else{ echo $suara_dpt/$total_dpt*100;};?>%"></div>
                       </div>
                     </div>
                     <!-- /.progress-group -->
+
+                    <div class="progress-group">
+                      Total Suara Masuk DPTb
+                      <span class="float-right"><b><?php if($suara_dpt==NULL){echo 0;}else{ echo $suara_dpt;};?></b></span>
+                      <div class="progress progress-sm">
+                        <div class="progress-bar bg-info" style="width:  <?php if($suara_dpt==NULL){echo 0/$total_dpt*100;}else{ echo $suara_dpt/$total_dpt*100;};?>%"></div>
+                      </div>
+                    </div>
+                    <!-- /.progress-group -->
+                    
+                    <div class="progress-group">
+                      <span class="progress-text">Total Suara Masuk DPTk</span>
+                      <span class="float-right"><b><?php if($suara_sah==NULL){echo 0;}else{ echo $suara_sah;};?></b></span>
+                      <div class="progress progress-sm">
+                        <div class="progress-bar bg-success" style="width:<?php if($suara_rusak==NULL){echo 0/$total_dpt*100;}else{ echo $suara_rusak/$total_dpt*100;}?>%"></div>
+                      </div>
+                    </div>
+
+                    <!-- /.progress-group -->
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- ./card-body -->
+              <div class="card-footer">
+                <div class="row">
+                <?php if($grafik->getResultArray()!=NULL){
+                foreach ($grafik->getResultArray() as $x){?>
+                  <div class="col-sm-4 col-6">
+                    <div class="description-block border-right">
+                      <h1><span class="description-percentage text-success"></i><?= round(($x['jumlah_suara']/($suara_sah)*100),3)?>%</span></h1>
+                      <h2 class="description-header"><?= $x['no_urut'];?></h2>
+                      <span class="description-text"><?= $x['walikota'];?></span>
+                      <p class="description-text"><?= $x['wakilwalikota'];?></p>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                <?php }} else { foreach ($calon->getResultArray() as $x){?>
+                <div class="col-sm-4 col-6">
+                    <div class="description-block border-right">
+                    <h1><span class="description-percentage text-success"></i>0%</span></h1>
+                      <h2 class="description-header"><?= $x['no_urut'];?></h2>
+                      <span class="description-text"><?= $x['nama_ketua'];?></span>
+                      <p class="description-text"><?= $x['nama_wakil'];?></p>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                  <?php } }?>
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-footer -->
+            </div>
+          </div>
+        </div>
+      </div>
+            <!-- /.card -->
+            <!-- Info boxes -->
+      <div class="hasil">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box">
+              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Total Daftar Pemilih Tetap</span>
+                <span class="info-box-number">
+                  <?= $total_dpt; ?>
+                </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-check"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Total Suara Sah</span>
+                <span class="info-box-number"><?php echo 0;?></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+
+          <!-- fix for small devices only -->
+          <div class="clearfix hidden-md-up"></div>
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-window-close"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Total Suara Rusak</span>
+                <span class="info-box-number"><?php echo 0;?></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box mb-3">
+              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-map"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Total Tps</span>
+                <span class="info-box-number"><?= $total_tps;?></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title">Report Perolehan Suara Final</h5>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
+                      <i class="fas fa-wrench"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" role="menu">
+                      <a href="#" class="dropdown-item">Action</a>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                <div class="row">
+                  <div class="col-md-8">
+                      <!-- Sales Chart Canvas -->
+                      <canvas id="kpu-temporary" height="420" style="height: 420px;"></canvas>
+                    <!-- /.chart-responsive -->
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-md-4">
+                    <p class="text-center">
+                      <strong>SUARA MASUK</strong>
+                    </p>
 
                     <div class="progress-group">
                       Total Suara Masuk
-                      <span class="float-right"><b>310</b>/400</span>
+                      <span class="float-right"><b><?php if($suara_dpt==NULL){echo 0;}else{ echo $suara_dpt+$suara_sah;};?></b>/<?= $total_dpt; ?></span>
                       <div class="progress progress-sm">
-                        <div class="progress-bar bg-success" style="width: 75%"></div>
+                        <div class="progress-bar bg-info" style="width:  <?php if($suara_dpt==NULL){echo 0/$total_dpt*100;}else{ echo $suara_dpt/$total_dpt*100;};?>%"></div>
                       </div>
                     </div>
-
                     <!-- /.progress-group -->
+
                     <div class="progress-group">
-                      <span class="progress-text">Total Suara Rusak</span>
-                      <span class="float-right"><b>480</b>/800</span>
+                      Total Suara Masuk DPTb
+                      <span class="float-right"><b><?php echo 0;?></b></span>
                       <div class="progress progress-sm">
-                        <div class="progress-bar bg-danger" style="width: 60%"></div>
+                        <div class="progress-bar bg-info" style="width:  <?php if($suara_dpt==NULL){echo 0/$total_dpt*100;}else{ echo $suara_dpt/$total_dpt*100;};?>%"></div>
                       </div>
                     </div>
-
                     <!-- /.progress-group -->
+                    
                     <div class="progress-group">
-                      Total Tps
-                      <span class="float-right"><b>250</b>/500</span>
+                      <span class="progress-text">Total Suara Masuk DPTk</span>
+                      <span class="float-right"><b><?php echo 0;?></b></span>
                       <div class="progress progress-sm">
-                        <div class="progress-bar bg-warning" style="width: 50%"></div>
+                        <div class="progress-bar bg-success" style="width:<?php if($suara_rusak==NULL){echo 0/$total_dpt*100;}else{ echo $suara_rusak/$total_dpt*100;}?>%"></div>
                       </div>
                     </div>
                     <!-- /.progress-group -->
@@ -172,41 +340,28 @@
               <!-- ./card-body -->
               <div class="card-footer">
                 <div class="row">
-                  <div class="col-sm-3 col-6">
+                <?php if($cekgrafik==0){
+                foreach ($grafik->getResultArray() as $x){?>
+                  <div class="col-sm-4 col-6">
                     <div class="description-block border-right">
-                      <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
-                      <h5 class="description-header">$35,210.43</h5>
-                      <span class="description-text">TOTAL REVENUE</span>
+                      <h1><span class="description-percentage text-success"></i><?= round(($x['jumlah_suara']/($suara_sah)*100),3)?>%</span></h1>
+                      <h2 class="description-header"><?= $x['no_urut'];?></h2>
+                      <span class="description-text"><?= $x['walikota'];?></span>
+                      <p class="description-text"><?= $x['wakilwalikota'];?></p>
                     </div>
                     <!-- /.description-block -->
                   </div>
-                  <!-- /.col -->
-                  <div class="col-sm-3 col-6">
+                <?php }} else { foreach ($calon->getResultArray() as $x){?>
+                <div class="col-sm-4 col-6">
                     <div class="description-block border-right">
-                      <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>
-                      <h5 class="description-header">$10,390.90</h5>
-                      <span class="description-text">TOTAL COST</span>
+                    <h1><span class="description-percentage text-success"></i>0%</span></h1>
+                      <h2 class="description-header"><?= $x['no_urut'];?></h2>
+                      <span class="description-text"><?= $x['nama_ketua'];?></span>
+                      <p class="description-text"><?= $x['nama_wakil'];?></p>
                     </div>
                     <!-- /.description-block -->
                   </div>
-                  <!-- /.col -->
-                  <div class="col-sm-3 col-6">
-                    <div class="description-block border-right">
-                      <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
-                      <h5 class="description-header">$24,813.53</h5>
-                      <span class="description-text">TOTAL PROFIT</span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
-                  <!-- /.col -->
-                  <div class="col-sm-3 col-6">
-                    <div class="description-block">
-                      <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
-                      <h5 class="description-header">1200</h5>
-                      <span class="description-text">GOAL COMPLETIONS</span>
-                    </div>
-                    <!-- /.description-block -->
-                  </div>
+                  <?php } }?>
                 </div>
                 <!-- /.row -->
               </div>
@@ -216,15 +371,7 @@
           </div>
           <!-- /.col -->
         </div>
-        <!-- /.row -->
-
-        <!-- Main row -->
-        
-        <!-- /.row -->
       </div><!--/. container-fluid -->
     </section>
-    <!-- /.content -->
-  </div>
   <!-- /.content-wrapper -->
-  
   <?= $this->endSection(); ?>

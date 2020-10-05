@@ -53,7 +53,8 @@ class MobileController extends ResourceController
     public function kirimSuara(){
  
         $id_panitia   = $this->request->getPost('id_panitia');
-        $c4 = $this->request->getPost('c4');
+        $c1 = $this->request->getPost('c1');   
+        $selfi = $this->request->getPost('selfi');
         $id_pasangan = $this->request->getPost('id_pasangan');
         $hasil_suara = $this->request->getPost('hasil_suara');
         $suara_sah = $this->request->getPost('suara_sah');
@@ -73,13 +74,18 @@ class MobileController extends ResourceController
         $surat_suara_sisa = $this->request->getPost('surat_suara_sisa');
         $surat_suara_guna = $this->request->getPost('surat_suara_guna');
         $jumlah_suara = $this->request->getPost('total_suara');
-
+        
+        if ($id_panitia !=NULL && $c1 !=NULL && $selfi !=NULL && $id_pasangan !=NULL && $hasil_suara !=NULL && $suara_sah !=NULL &&
+            $suara_tidak_sah !=NULL && $DPT !=NULL && $DPTk !=NULL && $total_DPT !=NULL && $pengguna_DPT !=NULL && $pengguna_DPTb !=NULL &&
+            $pengguna_DPTk !=NULL && $jumlah_pengguna !=NULL && $disabilitas !=NULL && $disabilitas_pemilih !=NULL && $total_surat_suara !=NULL &&
+            $surat_suara_kembali !=NULL && $surat_suara_sisa !=NULL && $surat_suara_guna !=NULL && $jumlah_suara !=NULL
+        ){
         //Deklarasi colomn tabel suara
         $suara = [
             'id_panitia'            => $id_panitia,
             'total_suara'           => $jumlah_suara,
-            'c4'                    => $c4,
-            'status'                => 0,
+            'c1'                    => $c1,
+            'selfi'                 => $selfi,
             'suara_sah'             => $suara_sah,
             'suara_tidak_sah'       => $suara_tidak_sah,
             'DPT'                   => $DPT,
@@ -125,7 +131,34 @@ class MobileController extends ResourceController
                 $update_suara = $this->pasangan->updateSuara('SET 
                 id_panitia          = "'.$id_panitia.'", 
                 total_suara         = "'.$jumlah_suara.'",
-                c4                  = "'.$c4.'",
+                c1                  = "'.$c1.'",
+                selfi               = "'.$selfi.'",
+                suara_sah           = "'.$suara_sah.'",
+                suara_tidak_sah     = "'.$suara_tidak_sah.'",
+                DPT                 = "'.$DPT.'",
+                DPTb                = "'.$DPTb.'",
+                DPTk                = "'.$DPTk.'",
+                total_DPT           = "'.$total_DPT.'",
+                pengguna_DPT        = "'.$pengguna_DPT.'",
+                pengguna_DPTb       = "'.$pengguna_DPTb.'",
+                pengguna_DPTk       = "'.$pengguna_DPTk.'",
+                jumlah_pengguna     = "'.$jumlah_pengguna.'",
+                disabilitas         = "'.$disabilitas.'",
+                disabilitas_pemilih = "'.$disabilitas_pemilih.'",
+                total_surat_suara   = "'.$total_surat_suara.'",
+                surat_suara_kembali = "'.$surat_suara_kembali.'",
+                surat_suara_sisa    = "'.$surat_suara_sisa.'",
+                surat_suara_guna    = "'.$surat_suara_guna.'",
+                updated_at          = CURRENT_TIMESTAMP
+                WHERE id_suara      = "'.$detailID['cekid'].'"'
+                );
+
+                //query update suara temporary
+                $update_suara_temporary = $this->pasangan->updateSuaraTemporary('SET 
+                id_panitia          = "'.$id_panitia.'", 
+                total_suara         = "'.$jumlah_suara.'",
+                c1                  = "'.$c1.'",
+                selfi               = "'.$selfi.'",
                 suara_sah           = "'.$suara_sah.'",
                 suara_tidak_sah     = "'.$suara_tidak_sah.'",
                 DPT                 = "'.$DPT.'",
@@ -152,9 +185,14 @@ class MobileController extends ResourceController
                         $update_detail_suara = $this->pasangan->updateDetailSuara('SET 
                         hasil_suara = "'.$hasil_suara[$x].'"
                         WHERE id_detail = "'.$detail_id[$x].'"');
-                    }   
 
-                if ($update_suara != false && $update_detail_suara != false){
+                        //query update detail suara temporary
+                        $update_detail_suara_temporary = $this->pasangan->updateDetailSuaraTemporary('SET 
+                        hasil_suara = "'.$hasil_suara[$x].'"
+                        WHERE id_detail = "'.$detail_id[$x].'"');
+                    }   
+                //bug
+                if ($update_suara && $update_detail_suara && $update_suara_temporary && $update_detail_suara_temporary){
                     $respon = array("error"=>false,
                         "response_code"=>200,
                         "message" =>"Suara Berhasil Diupdate");
@@ -167,43 +205,56 @@ class MobileController extends ResourceController
                         "message" =>"Suara Gagal Update");
                         
                     return $this->respond($respon, 200);
+                    }
                 }
             }
-        }
-        else{
-            //query tambah suara
-            $tambah_suara = $this->db->table('suara')->insert($suara);
-            
-            //Menyimpan id suara terakhir
-            $last_id = $this->db->insertID();
+            else{
+                //query tambah suara
+                $tambah_suara = $this->db->table('suara')->insert($suara);
+                //query tambah suara temporary
+                $tambah_suara_temporary = $this->db->table('suara_temporary')->insert($suara);
+                
+                //Menyimpan id suara terakhir
+                $last_id = $this->db->insertID();
 
-            for ($x=0; $x<count($id_pasangan); $x++){
-                
-                //Deklarasi colomn tabel detail suara
-                $detail_suara = [
-                    'id_suara'      => $last_id,
-                    'id_pasangan'   => $id_pasangan[$x],
-                    'hasil_suara'   => $hasil_suara[$x]
-                ];
-                
-                //query tambah detail suara
-                $tambah_detail_suara = $this->db->table('detail_suara')->insert($detail_suara);
-                
+                for ($x=0; $x<count($id_pasangan); $x++){
+                    
+                    //Deklarasi colomn tabel detail suara
+                    $detail_suara = [
+                        'id_suara'      => $last_id,
+                        'id_pasangan'   => $id_pasangan[$x],
+                        'hasil_suara'   => $hasil_suara[$x]
+                    ];
+                    
+                    //query tambah detail suara
+                    $tambah_detail_suara = $this->db->table('detail_suara')->insert($detail_suara);
+
+                    //query tambah detail suara temporary
+                    $tambah_detail_suara_temporary = $this->db->table('detail_suara_temporary')->insert($detail_suara);
+                    
+                }
+                //bug
+                if ($tambah_suara && $tambah_detail_suara && $tambah_suara_temporary && $tambah_detail_suara_temporary){
+                    $respon = array("error"=>false,
+                        "response_code"=>200,
+                        "message" =>"Suara Berhasil Ditambah");
+                        
+                    return $this->respond($respon, 200);
+                } else {
+                    $respon = array("error"=>true,
+                        "response_code"=>400,
+                        "message" =>"Suara Gagal Ditambah");
+                        
+                    return $this->respond($respon, 200);
+                }
             }
+        }else{
             
-            if ($tambah_suara != false && $tambah_detail_suara != false){
-                $respon = array("error"=>false,
-                    "response_code"=>200,
-                    "message" =>"Suara Berhasil Ditambah");
-                    
-                return $this->respond($respon, 200);
-            } else {
-                $respon = array("error"=>true,
-                    "response_code"=>400,
-                    "message" =>"Suara Gagal Ditambah");
-                    
-                return $this->respond($respon, 200);
-            }
+            $respon = array("error"=>true,
+            "response_code"=>500,
+            "message" =>"Data Incompleted");
+            
+        return $this->respond($respon, 200);
         }
 
     }
@@ -254,7 +305,8 @@ class MobileController extends ResourceController
             "surat_suara_sisa"      => $x['surat_suara_sisa'],
             "surat_suara_guna"      => $x['surat_suara_guna'], 
             "total_suara"           => $x['total_suara'],
-            "c4"                    => $x['c4'],
+            "c1"                    => $x['c1'],
+            "selfi"                    => $x['selfi'],
             "records" =>$push), 200);
         }else{
             return $this->respond(array("error"=>false,
@@ -301,16 +353,16 @@ class MobileController extends ResourceController
 
     public function detailPanitia($username){
         
-        $secret_key = $this->protect->privateKey();
-        $token = null;
-        $authHeader = $this->request->getServer('HTTP_AUTHORIZATION');
-        $arr = explode(" ", $authHeader);
-        $token = $arr[1];
-        if($token){
-            try {
-                $decoded = JWT::decode($token, $secret_key, array('HS256'));
-                // Access is granted. Add code of the operation here 
-                if($decoded){
+        // $secret_key = $this->protect->privateKey();
+        // $token = null;
+        // $authHeader = $this->request->getServer('HTTP_AUTHORIZATION');
+        // $arr = explode(" ", $authHeader);
+        // $token = $arr[1];
+        // if($token){
+        //     try {
+        //         $decoded = JWT::decode($token, $secret_key, array('HS256'));
+        //         // Access is granted. Add code of the operation here 
+        //         if($decoded){
         
                     $data = $this->pasangan->detailPanitia1("WHERE concat(a.id_provinsi,'.',a.id_kab_kota) = b.kode 
                     AND concat(a.id_provinsi,'.',a.id_kab_kota,'.',a.id_kecamatan) = c.kode 
@@ -321,6 +373,7 @@ class MobileController extends ResourceController
                         $output = array(
                             'username'          => $x['username'],
                             'no_tps'            => $x['no_tps'],
+                            'dpt'               => $x['dpt'],
                             'provinsi'          => $x['provinsi'],
                             'kota_kabupaten'    => $x['kabupaten'],
                             'kecamatan'         => $x['kecamatan'],
@@ -342,16 +395,154 @@ class MobileController extends ResourceController
                             
                         return $this->respond($respon, 200);
                     }
-                }
-            }catch (\Exception $e){
+                // }
+        //     }catch (\Exception $e){
  
-                $output = [
-                    'message' => 'Access denied',
-                    "error" => $e->getMessage()
-                ];
+        //         $output = [
+        //             'message' => 'Access denied',
+        //             "error" => $e->getMessage()
+        //         ];
          
-                return $this->respond($output, 401);
+        //         return $this->respond($output, 401);
+        //     }
+        // }
+    }
+
+    //start detail DPT kecamatan
+    public function getKecamatanDPT(){
+        $id_provinsi = 18;
+        $id_kab_kota = 71;
+
+            $kecamatan = $this->pasangan->kecamatan("where b.kode LIKE '$id_provinsi.$id_kab_kota%' ORDER BY b.nama ASC")->getResultArray();
+            $push = array();
+            foreach ($kecamatan as $x){
+                $output = array(
+                    'kecamatan'  => $x['kecamata'],
+                    'id_kecamatan'  => $x['id_kecamatan'],
+                );
+                array_push($push, $output);
+            }
+
+            if ($kecamatan!=NULL){
+                $respon = array("error"=>false,
+                    "response_code"=>200,
+                    "records"=> $push);    
+                    
+                return $this->respond($respon, 200); 
+            }
+            else {
+                $respon = array("error"=>true,
+                    "response_code"=>400,
+                    "message" =>"Tidak ada produk");    
+                    
+                return $this->respond($respon, 200);
+            }
+    }
+
+    public function getJumlahKelurahan($id_kecamatan){
+        $id_provinsi = 18;
+        $id_kab_kota = 71;
+            $kelurahan = $this->pasangan->kelurahan("where kode LIKE '$id_provinsi.$id_kab_kota.$id_kecamatan.%'
+            ORDER BY nama ASC")->getResultArray();
+            
+            if (count($kelurahan)!=NULL){
+                $respon = array("error"=>false,
+                    "response_code"=>200,
+                    "jumlah_kelurahan"=> count($kelurahan));    
+                    
+                return $this->respond($respon, 200); 
+            }
+            else {
+                $respon = array("error"=>true,
+                    "response_code"=>400,
+                    "jumlah_kelurahan" =>count($kelurahan));    
+                    
+                return $this->respond($respon, 200);
             }
         }
-    }
+
+    public function getKelurahanDPT($id_kecamatan){
+        $id_provinsi = 18;
+        $id_kab_kota = 71;
+            $kelurahan = $this->pasangan->kelurahan("where kode LIKE '$id_provinsi.$id_kab_kota.$id_kecamatan.%'
+            ORDER BY nama ASC")->getResultArray();
+            $push = array();
+            foreach ($kelurahan as $x){
+                $output = array(
+                    'kelurahan'  => $x['kelurahan'],
+                    'id_kelurahan'  => $x['id_kelurahan'],
+                );
+                array_push($push, $output);
+            }
+
+            if ($kelurahan!=NULL){
+                $respon = array("error"=>false,
+                    "response_code"=>200,
+                    "records"=> $push);    
+                    
+                return $this->respond($respon, 200); 
+            }
+            else {
+                $respon = array("error"=>true,
+                    "response_code"=>400,
+                    "message" =>"Tidak ada produk");    
+                    
+                return $this->respond($respon, 200);
+            }
+        }
+    
+    public function getJumlahTps($id_kecamatan, $id_kelurahan){
+            $id_provinsi = 18;
+            $id_kab_kota = 71;
+                $kelurahan = $this->pasangan->tps("where username LIKE '$id_provinsi$id_kab_kota$id_kecamatan$id_kelurahan%'
+                ORDER BY no_tps ASC")->getResultArray();
+                
+                if (count($kelurahan)!=NULL){
+                    $respon = array("error"=>false,
+                        "response_code"=>200,
+                        "jumlah_kelurahan"=> count($kelurahan));    
+                        
+                    return $this->respond($respon, 200); 
+                }
+                else {
+                    $respon = array("error"=>true,
+                        "response_code"=>400,
+                        "jumlah_kelurahan" =>count($kelurahan));    
+                        
+                    return $this->respond($respon, 200);
+                }
+            }
+
+    public function getDPT($id_kecamatan, $id_kelurahan){
+        $id_provinsi = 18;
+        $id_kab_kota = 71;
+        $kelurahan = $this->pasangan->tps("where username LIKE '$id_provinsi$id_kab_kota$id_kecamatan$id_kelurahan%'
+        ORDER BY no_tps ASC")->getResultArray();
+        $push = array();
+            foreach ($kelurahan as $x){
+                $output = array(
+                    'no_tps'  => $x['no_tps'],
+                    'total_dpt'  => $x['dpt'],
+                    'dpt_lakilaki'  => $x['laki_laki'],
+                    'dpt_perempuan'  => $x['perempuan'],
+                );
+                array_push($push, $output);
+            }
+    
+            if ($kelurahan!=NULL){
+                $respon = array("error"=>false,
+                    "response_code"=>200,
+                    "records"=> $push);    
+
+                return $this->respond($respon, 200); 
+            }
+            else {
+                $respon = array("error"=>true,
+                    "response_code"=>400,
+                    "message" =>"Tidak ada produk");    
+
+                return $this->respond($respon, 200);
+            }
+        }
+    
 }

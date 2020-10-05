@@ -6,7 +6,7 @@ use CodeIgniter\Model;
  
 class AuthModel extends Model{
  
-    protected $table = "panitia";
+    protected $table = "tps";
  
     public function register($data)
     {

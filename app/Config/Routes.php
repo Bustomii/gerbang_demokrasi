@@ -33,13 +33,20 @@ $routes->setAutoRoute(true);
 
 //Admin Route
 $routes->get('/', 'AdminControllers::index');
+$routes->get('/logout', 'AdminControllers::logout');
+$routes->post('/admin/login', 'AdminControllers::AdminLogin');
 $routes->get('/admin', 'AdminControllers::dashboard');
 $routes->get('/pasangan_calon', 'AdminControllers::calonPasangan');
 $routes->get('/tambah_calon', 'AdminControllers::tambahCalon');
 $routes->get('/panitia', 'AdminControllers::panitia');
-$routes->get('/suara', 'AdminControllers::getSuara');
+$routes->get('/suara_masuk', 'AdminControllers::getSuara');
+$routes->get('/suara_masuk/(:segment)', 'AdminControllers::formValidasi/$1');
+$routes->get('/suara_validasi', 'AdminControllers::getSuaraValidasi');
+$routes->get('/suara_validasi/(:segment)', 'AdminControllers::detailSuara/$1');
+$routes->post('/validasi', 'AdminControllers::validasiSuara');
 $routes->get('/generate', 'AdminControllers::generate');
 $routes->post('/create_panitia', 'AdminControllers::createPanitia');
+$routes->get('/kirim', 'AdminControllers::kirimDatabase');
 
 ///Mobile REST API
 $routes->get('/pasangancalon/(:segment)', 'MobileController::pasanganCalon/$1');
@@ -47,6 +54,11 @@ $routes->post('/suara', 'MobileController::kirimSuara');
 $routes->post('/login', 'MobileController::Login');
 $routes->get('/detail/(:segment)', 'MobileController::detailPanitia/$1');
 $routes->get('/getsuara/(:segment)', 'MobileController::getSuara/$1');
+$routes->get('/getkecamatan', 'MobileController::getKecamatanDPT');
+$routes->get('/getkecamatan/(:segment)', 'MobileController::getKelurahanDPT/$1');
+$routes->get('/getjumalahkelurahan/(:segment)', 'MobileController::getJumlahKelurahan/$1');
+$routes->get('/getkecamatan/(:segment)/(:segment)', 'MobileController::getDPT/$1/$2');
+$routes->get('/getjumalahTps/(:segment)/(:segment)', 'MobileController::getJumlahTps/$1/$2');
 
 //mencoba gagal
 $routes->post('/auth/login', 'AuthController::login');

@@ -34,7 +34,7 @@
                                 <th><center>KOTA/KABUPATEN</th>
                                 <th><center>PERIODE</th>
                                 <th><center>NO URUT</th>
-                                <th>AKSI</th>
+                                <th><center>AKSI</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -69,7 +69,7 @@
                                 <th><center>KOTA/KABUPATEN</th>
                                 <th><center>PERIODE</th>
                                 <th><center>NO URUT</th>
-                                <th>AKSI</th>
+                                <th><center>AKSI</th>
                                 </tr>
                                 </tfoot>
                             </table>
