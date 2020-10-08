@@ -49,7 +49,7 @@ class AuthController extends ResourceController
                 $audience_claim = "THE_AUDIENCE";
                 $issuedat_claim = time(); // issued at
                 $notbefore_claim = $issuedat_claim + 10; //not before in seconds
-                $expire_claim = $issuedat_claim + 3600; // expire time in seconds
+                $expire_claim = $issuedat_claim + 360; // expire time in seconds
                 $token = array(
                     "iss" => $issuer_claim,
                     "aud" => $audience_claim,

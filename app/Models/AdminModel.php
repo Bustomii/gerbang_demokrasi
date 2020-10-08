@@ -46,6 +46,9 @@ class AdminModel extends Model {
     function validasisuara($where = ''){
         return $this->db->query("update suara $where");
     }
+    function batalvalidasi($where = ''){
+        return $this->db->query("update suara $where");
+    }
     function cekEvaluasi($where = ''){
         return $this->db->query("select * FROM suara $where");
     }

@@ -6,6 +6,7 @@
       <div class="container-fluid">
         <div class="row mb-1">
           <div class="col-sm-6">
+          <h>Durasi Evaluasi <span id="display"></span> </h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -213,4 +214,37 @@
         </div>
         <!-- /.row -->
       </div>
-  <?= $this->endSection(); ?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+    setTimeout(function()
+    {window.top.location="batal/"+<?= $x->id_suara; ?>},1800000);
+</script>
+<script>
+function CountDown(duration, display) {
+            if (!isNaN(duration)) {
+                var timer = duration, minutes, seconds;
+                
+              var interVal=  setInterval(function () {
+                    minutes = parseInt(timer / 60, 10);
+                    seconds = parseInt(timer % 60, 10);
+
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                    $(display).html("<b>" + minutes + " Menit : " + seconds + " Detik" + "</b>");
+                    if (--timer < 0) {
+                        timer = duration;
+                       SubmitFunction();
+                       $('#display').empty();
+                       clearInterval(interVal)
+                    }
+                    },1000);
+            }
+        }  
+        function SubmitFunction(){
+       $('form').submit();
+        }
+         CountDown(1800,$('#display'));
+</script>
+
+<?= $this->endSection(); ?>

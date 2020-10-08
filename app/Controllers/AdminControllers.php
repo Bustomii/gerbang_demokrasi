@@ -208,7 +208,7 @@ class AdminControllers extends BaseController
             $cek_evaluasi = $this->adminmodel->cekEvaluasi("WHERE id_suara = '".$id_suara."'")->getResult();
             foreach($cek_evaluasi as $cek);
 
-            if($cek->cek ==0){
+            if($cek->cek == 0){
 
             $update_evaluasi = $this->adminmodel->validasisuara("SET cek = 1, admin = '".$user."' WHERE id_suara = '".$id_suara."'");
 
@@ -233,6 +233,31 @@ class AdminControllers extends BaseController
                 'pasangan'  => $pasangan
                 ]);
 
+            }else if($cek->cek == 1 && $cek->admin == $user){
+
+                $update_evaluasi = $this->adminmodel->validasisuara("SET cek = 1, admin = '".$user."' WHERE id_suara = '".$id_suara."'");
+    
+                $data = $this->adminmodel->dataSuara("WHERE concat(a.id_provinsi,'.',a.id_kab_kota) = b.kode 
+                AND concat(a.id_provinsi,'.',a.id_kab_kota,'.',a.id_kecamatan) = c.kode 
+                AND concat(a.id_provinsi,'.',a.id_kab_kota,'.',a.id_kecamatan,'.',a.id_kelurahan) = d.kode 
+                AND a.id_provinsi = e.kode AND a.username = f.id_panitia
+                AND a.id_kab_kota = '".$kota_kab."' AND f.status = 0
+                AND f.id_suara = '".$id_suara."' LIMIT 1")->getResult();
+    
+                $pasangan = $this->adminmodel->hasilsuara("WHERE a.id_suara = b.id_suara AND a.id_pasangan = c.id_pasangan 
+                AND c.id_pasangan = d.id_pasangan AND e.id_calon = d.ketua AND f.id_calon = d.wakil 
+                AND g.id_suara = a.id_suara AND g.status = 0
+                AND a.id_suara = '".$id_suara."'")->getResultArray();
+                
+                $active = 'suara_masuk';
+                return view('admin/form_validasi', [
+                    'active'    => $active,
+                    'data'      => $data,
+                    'cekgrafik' => 0,
+                    'user'      => $user,
+                    'pasangan'  => $pasangan
+                    ]);
+    
             }else {
                 session()->setFlashData('warning', 'Suara Sedang Dievaluasi Oleh '.$cek->admin.' '.'!');
                 return redirect()->to(base_url('/suara_masuk'));
@@ -332,6 +357,22 @@ class AdminControllers extends BaseController
             }
             session()->setFlashData('success', 'Suara Berhasil Divalidasi!');
             return redirect()->to(base_url('/suara_masuk'));            
+
+        }else {return redirect()->to(base_url('/'));}
+    }
+
+    //batal validasi suara
+
+    public function batalValidasi($id_suara){
+        if (isset($_SESSION['admin'])) {
+            $user = $_SESSION['admin'];
+            $id_provinsi = $_SESSION['id_provinsi'];
+            $kota_kab = $_SESSION['id_kab_kota'];
+
+            $data = $this->adminmodel->batalvalidasi("SET cek = 0, admin = NULL WHERE id_suara = '".$id_suara."'");
+
+            session()->setFlashData('danger', 'Evaluasi Suara Dibatalkan!');
+            return redirect()->to(base_url('/suara_masuk'));
 
         }else {return redirect()->to(base_url('/'));}
     }
@@ -564,38 +605,31 @@ class AdminControllers extends BaseController
             $id_provinsi = $_SESSION['id_provinsi'];
             $kota_kab = $_SESSION['id_kab_kota'];
         
-            $suara = $this->adminmodel->kirimSuara("WHERE substr(id_panitia,1,4) = concat($id_provinsi, $kota_kab)");
+                $suara = $this->adminmodel->kirimSuara("WHERE substr(id_panitia,1,4) = concat($id_provinsi, $kota_kab)")->getResultArray();
             
-            $detail_suara = $this->adminmodel->kirimDetailSuara("ORDER BY id_detail ASC");
-
-            foreach($detail_suara->getResultArray() as $y){
-                $id_detail_post[]   = $y['id_detail'];
-                $id_suara_post[]    = $y['id_suara'];
-                $id_pasangan_post[] = $y['id_pasangan'];
-                $hasil_suara_post[] = $y['hasil_suara'];
+                $detail_suara = $this->adminmodel->kirimDetailSuara("ORDER BY id_detail ASC")->getResultArray();
                 
-            }
-                $url = "https://kpu-bandarlampungkota.go.id/kpu/public/terima";
-
-                for ($i = 0; $i<count($id_detail_post); $i++){
-                    $curlHandle = curl_init();
-                    curl_setopt($curlHandle, CURLOPT_URL, $url); 
-                    curl_setopt($curlHandle, CURLOPT_POSTFIELDS, "id_detail=".$id_detail_post[$i]."&id_suara=".$id_suara_post[$i]."&id_pasangan=".$id_pasangan_post[$i]."&hasil_suara=".$hasil_suara_post[$i]);
-                    curl_setopt($curlHandle, CURLOPT_HEADER, 0);
-                    curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
-                    curl_setopt($curlHandle, CURLOPT_TIMEOUT,30);
-                    curl_setopt($curlHandle, CURLOPT_POST, 1);
-                    curl_exec($curlHandle);
-                    curl_close($curlHandle);
-                }
+                $url = "https://kpu-bandarlampungkota.go.id/terima.php";
+                    
+                $curlHandle = curl_init();
+                    
+                curl_setopt($curlHandle, CURLOPT_URL, $url); 
+                curl_setopt($curlHandle, CURLOPT_POSTFIELDS, "detail_suara=".json_encode($detail_suara)."&suara=".json_encode($suara));
+                curl_setopt($curlHandle, CURLOPT_HEADER,0);
+                curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($curlHandle, CURLOPT_TIMEOUT,3000);
+                curl_setopt($curlHandle, CURLOPT_POST, 1);
+                curl_exec($curlHandle);
+                curl_close($curlHandle);
+                
             $pengirim = array(
                 'pengirim' => $user,
                 'status'   => 'Terkirim'
             );
-
+            
             $kirim_data = $this->db->table('kirim')->insert($pengirim);
 
-            session()->setFlashdata('success', 'Berhasil Mengirim Ke Server KPU Bandar Lampung');
+            session()->setFlashdata('success', 'Berhasil Mengirim Data ke Server KPU');
             return redirect()->to(base_url('/suara_validasi'));
 
         }else { return redirect()->to(base_url('/'));}

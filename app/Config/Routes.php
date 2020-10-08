@@ -41,6 +41,7 @@ $routes->get('/tambah_calon', 'AdminControllers::tambahCalon');
 $routes->get('/panitia', 'AdminControllers::panitia');
 $routes->get('/suara_masuk', 'AdminControllers::getSuara');
 $routes->get('/suara_masuk/(:segment)', 'AdminControllers::formValidasi/$1');
+$routes->get('/suara_masuk/batal/(:segment)', 'AdminControllers::batalValidasi/$1');
 $routes->get('/suara_validasi', 'AdminControllers::getSuaraValidasi');
 $routes->get('/suara_validasi/(:segment)', 'AdminControllers::detailSuara/$1');
 $routes->post('/validasi', 'AdminControllers::validasiSuara');
@@ -59,6 +60,8 @@ $routes->get('/getkecamatan/(:segment)', 'MobileController::getKelurahanDPT/$1')
 $routes->get('/getjumalahkelurahan/(:segment)', 'MobileController::getJumlahKelurahan/$1');
 $routes->get('/getkecamatan/(:segment)/(:segment)', 'MobileController::getDPT/$1/$2');
 $routes->get('/getjumalahTps/(:segment)/(:segment)', 'MobileController::getJumlahTps/$1/$2');
+$routes->post('/search', 'MobileController::searchNIK');
+
 
 //mencoba gagal
 $routes->post('/auth/login', 'AuthController::login');

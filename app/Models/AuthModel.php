@@ -8,11 +8,11 @@ class AuthModel extends Model{
  
     protected $table = "tps";
  
-    public function register($data)
-    {
-        $query = $this->db->table($this->table)->insert($data);
-        return $query ? true : false;
-    }
+    // public function register($data)
+    // {
+    //     $query = $this->db->table($this->table)->insert($data);
+    //     return $query ? true : false;
+    // }
  
     public function cek_login($username)
     {

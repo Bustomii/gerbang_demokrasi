@@ -67,4 +67,7 @@ class MobileModel extends Model {
     public function tps($where = ''){
         return $this->db->query("select * From tps $where");
     }
+    public function searchTPS($where = ''){
+        return $this->db->query("select * From dpt a, tps b $where");
+    }
 }
