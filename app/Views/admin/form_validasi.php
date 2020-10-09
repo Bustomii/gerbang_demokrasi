@@ -151,6 +151,7 @@
                           <label class="col-sm-4 col-form-label">Surat Suara Guna</label>
                           <div class="col-sm-8">
                               <input required type="text" class="form-control" name="surat_suara_guna" value="<?= $x->surat_suara_guna; ?>">
+                              <input required type="hidden" class="form-control" name="status" value="1">
                           </div>
                         </div>
                     </div>
@@ -168,7 +169,7 @@
                   <div class="form-group row">
                     <label class="col-sm-4 col-form-label">No Urut</label>
                       <div class="col-sm-8">
-                        <input readonly type="hodden" class="form-control" name="id_detail[]" value="<?= $y['id_detail'] ?>">
+                        <input readonly type="hidden" class="form-control" name="id_detail[]" value="<?= $y['id_detail'] ?>">
                         <input readonly type="text" class="form-control" name="no_urut[]" value="<?= $y['no_urut'] ?>">
                       </div>
                     </div>
@@ -182,13 +183,12 @@
               </div>
             </div>
             <?php }?>
-            <div class="col-md-12">
+            <!-- <div class="col-md-12">
               <div class="card card-danger">
                 <div class="card-header">
                     <h3 class="card-title col-sm-6">Validasi</h3>
                   </div>
                     <div class="card-body">
-                      <!-- input pekerjaan -->
                       <div class="form-group row">
                           <label class="col-sm-4 col-form-label">Validasi*</label>
                           <div class="col-sm-8">
@@ -200,7 +200,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
           <!-- end card body -->
             <div class="col-md-12">
               <div class="card card-primary ">
