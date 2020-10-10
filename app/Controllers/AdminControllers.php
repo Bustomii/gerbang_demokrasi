@@ -131,25 +131,6 @@ class AdminControllers extends BaseController
         }else {return redirect()->to(base_url('/'));}
     }
 
-    //tambah pasangan calon walikota dan wakil walikota
-    public function tambahCalon()
-	{
-        if (isset($_SESSION['admin'])) {
-            $user = $_SESSION['admin'];
-            $id_provinsi = $_SESSION['id_provinsi'];
-            $kota_kab = $_SESSION['id_kab_kota'];
-
-            $data = $this->adminmodel->dataPasanganCalon("WHERE concat(a.id_provinsi,'.',a.id_kab_kota) = b.kode AND a.id_pasangan = c.id_pasangan AND c.ketua = d.id_calon AND c.wakil = e.id_calon ORDER BY a.id_provinsi ASC")->getResultArray();
-            $active = 'tambah_calon';
-            return view('admin/tambah_calon', [
-                'active'    =>$active,
-                'data'      =>$data,
-                'cekgrafik' =>0,
-                'user'      => $user,
-            ]);
-        }else {return redirect()->to(base_url('/'));}
-    }
-    
     //get panitia
     public function panitia()
 	{   
@@ -485,26 +466,28 @@ class AdminControllers extends BaseController
             }
         }else {return redirect()->to(base_url('/'));}
     }
+
     // add createCalon by fuad
-    // Fungsi untuk validasi form tambah dan ubah
-    // public function validation($mode){
-    //     $this->load->library('form_validation'); // Load library form_validation untuk proses validasinya
-        
-    //     // Tambahkan if apakah $mode save atau update
-    //     // Karena ketika update, NIS tidak harus divalidasi
-    //     // Jadi NIS di validasi hanya ketika menambah data siswa saja
-    //     if($mode == "save")
-    //     $this->form_validation->set_rules('nama_lengkap1', 'Nama', 'required|numeric|max_length[11]');
-    //     $this->form_validation->set_rules('nik1', 'NIK', 'required|max_length[50]');
-    //     $this->form_validation->set_rules('tempat_lahir1', 'Tempat Lahir', 'required');
-    //     $this->form_validation->set_rules('tanggal_lahir', 'Tanggal Lahir', 'required|numeric|max_length[15]');
-    //     $this->form_validation->set_rules('input_alamat', 'Alamat', 'required');
-        
-    //     if($this->form_validation->run()) // Jika validasi benar
-    //     return TRUE; // Maka kembalikan hasilnya dengan TRUE
-    //     else // Jika ada data yang tidak sesuai validasi
-    //     return FALSE; // Maka kembalikan hasilnya dengan FALSE
-    // }
+    //tambah pasangan calon walikota dan wakil walikota
+    public function tambahCalon()
+	{
+        if (isset($_SESSION['admin'])) {
+            $user = $_SESSION['admin'];
+            $id_provinsi = $_SESSION['id_provinsi'];
+            $kota_kab = $_SESSION['id_kab_kota'];
+
+        //    $data = $this->adminmodel->dataPasanganCalon("WHERE concat(a.id_provinsi,'.',a.id_kab_kota) = b.kode AND a.id_pasangan = c.id_pasangan AND c.ketua = d.id_calon AND c.wakil = e.id_calon ORDER BY a.id_provinsi ASC")->getResultArray();
+            $active = 'tambah_calon';
+            return view('admin/tambah_calon', [
+                'active'    =>$active,
+            //    'data'      =>$data,
+                'cekgrafik' =>0,
+                'user'      => $user,
+                'validation' => \Config\Services::validation()
+            ]);
+        }else {return redirect()->to(base_url('/'));}
+    }
+    
     
     // Fungsi untuk melakukan simpan data ke tabel nama_pasangan
     public function save(){
@@ -513,87 +496,151 @@ class AdminControllers extends BaseController
             $id_provinsi = $_SESSION['id_provinsi'];
             $kota_kab = $_SESSION['id_kab_kota'];
             
-                $nama1 = $this->request->getPost('nama_lengkap1');
-                $no_ktp1 = $this->request->getPost('nik1');
-                $jenis_kelamin1 = $this->request->getPost('jenis_kelamin1');
-                $tempat_lahir1 = $this->request->getPost('tempat_lahir1');
-                $tanggal_lahir1 = $this->request->getPost('tgl_lahir1');
-                $alamat_lengkap1 = $this->request->getPost('alamat_rumah1');
-                $pekerjaan1 = $this->request->getPost('pekerjaan1');
-                $agama1 = $this->request->getPost('agama1');
-                $id_provinsi1 = $this->request->getPost('id_provinsi1');
-                $kawin1 = $this->request->getPost('status-kawin1');
-                $email1 = $this->request->getPost('email1');
-                $no_hp1 = $this->request->getPost('no_hp1');
-
-                $nama2 = $this->request->getPost('nama_lengkap2');
-                $no_ktp2 = $this->request->getPost('nik2');
-                $jenis_kelamin2 = $this->request->getPost('jenis_kelamin2');
-                $tempat_lahir2 = $this->request->getPost('tempat_lahir2');
-                $tanggal_lahir2 = $this->request->getPost('tgl_lahir2');
-                $alamat_lengkap2 = $this->request->getPost('alamat_rumah2');
-                $pekerjaan2 = $this->request->getPost('pekerjaan2');
-                $agama2 = $this->request->getPost('agama2');
-                $id_provinsi2 = $this->request->getPost('id_provinsi2');
-                $kawin2 = $this->request->getPost('status-kawin2');
-                $email2 = $this->request->getPost('email2');
-                $no_hp2 = $this->request->getPost('no_hp2');
-
-                $data1 = array (
-                    "nama_lengkap" =>$nama1,
-                    "no_ktp" => $no_ktp1,
-                    "jenis_kelamin" =>$jenis_kelamin1,
-                    "tempat_lahir" =>$tempat_lahir1,
-                    "tanggal_lahir" =>$tanggal_lahir1,
-                    "alamat_lengkap" =>$alamat_lengkap1,
-                    "pekerjaan" =>$pekerjaan1,
-                    "agama" =>$agama1,
-                    "id_provinsi" =>$id_provinsi,
-                    "kawin" =>$kawin1,
-                    "email" =>$email1,
-                    "no_hp" =>$no_hp1
-                );
-                $data2 = array(
-                    "nama_lengkap" =>$nama2,
-                    "no_ktp" => $no_ktp2,
-                    "jenis_kelamin" =>$jenis_kelamin2,
-                    "tempat_lahir" =>$tempat_lahir2,
-                    "tanggal_lahir" =>$tanggal_lahir2,
-                    "alamat_lengkap" =>$alamat_lengkap2,
-                    "pekerjaan" =>$pekerjaan2,
-                    "agama" =>$agama2,
-                    "id_provinsi" =>$id_provinsi,
-                    "kawin" =>$kawin2,
-                    "email" =>$email2,
-                    "no_hp" =>$no_hp2
-                );
-                
-                // echo "<pre>";
-                // print_r($data1);
-                // echo "</pre>";
-
-                // echo "<pre>";
-                // print_r($data2);
-                // echo "</pre>";
-            // $data2 = array(
-            //     "nama_lengkap" => $this->input->post('nama_lengkap2'),
-            //     "no_ktp" => $this->input->post('nik2'),
-            //     "jenis_kelamin" => $this->input->post('jenis_kelamin2'),
-            //     "tempat_lahir" => $this->input->post('tempat_lahir2'),
-            //     "tanggal_lahir" => $this->input->post('tanggal_lahir2'),
-            //     "alamat_lengkap" => $this->input->post('alamat_lengkap2'),
-            //     "pekerjaan" => $this->input->post('pekerjaan2'),
-            //     "agama" => $this->input->post('agama2'),
-            //     "id_provinsi" => $this->input->post('id_provinsi2'),
-            //     "kawin" => $this->input->post('kawin2'),
-            //     "email" => $this->input->post('email2'),
-            //     "no_hp" => $this->input->post('no_hp2')
-            // );
-            $this->adminmodel->createCalon($data1, $data2);
+            //validation 
+        if(!$this->validate([
+            'nama_lengkap[]' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Nama lengkap tidak boleh kosong.'
+                ]
+            ],
+            'nik[]' => [
+                'rules' => 'required|numeric|max_length[16]',
+                'errors' => [
+                    'required' => 'NIK tidak boleh kosong.',
+                    'numeric' => 'NIK harus numeric.',
+                    'max_length' => 'Panjang NIK tidak sesuai'
+                ]
+            ],
+            'jenis_kelamin[]' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Jenis kelamin harus dipilih.'
+                ]
+            ],
+            'tempat_lahir[]' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Tempat lahir tidak boleh kosong.'
+                ]
+            ],
+            'tgl_lahir[]' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Tanggal lahir tidak boleh kosong.'
+                ]
+            ],
+            'alamat_rumah[]' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Alamat tidak boleh kosong.'
+                ]
+            ],
+            'pekerjaan[]' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Pekerjaan tidak boleh kosong.'
+                ]
+            ],
+            'agama[]' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Agama tidak boleh kosong.'
+                ]
+            ],
+            'status-kawin[]' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Status harus dipilih.'
+                ]
+            ],
+            'foto[]' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Foto tidak boleh kosong.'
+                ]
+            ],
+            'no_hp[]' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'No.Hp tidak boleh kosong.'
+                ]
+            ],
+            'no_urut[]' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'No Urut tidak boleh kosong.'
+                ]
+            ],
+            'periode[]' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Periode tidak boleh kosong.'
+                ]
+            ]
+        ])) {
+            $validation = \Config\Services::validation();
+            return redirect()->to('/tambah_calon')->withInput()->with('validation', $validation);
+        } else {
+            $id_provinsi = '18';
+            // Ambil data yang dikirim dari form
+            $nama = $this->request->getPost('nama_lengkap');
+            $no_ktp = $this->request->getPost('nik');
+            $jenis_kelamin = $this->request->getPost('jenis_kelamin');
+            $tempat_lahir = $this->request->getPost('tempat_lahir');
+            $tanggal_lahir = $this->request->getPost('tgl_lahir');
+            $alamat_lengkap = $this->request->getPost('alamat_rumah');
+            $pekerjaan = $this->request->getPost('pekerjaan');
+            $agama = $this->request->getPost('agama');
+            $kawin = $this->request->getPost('status-kawin');
+            $email = $this->request->getPost('email');
+            $no_hp = $this->request->getPost('no_hp');
+            $foto = $this->request->getPost('foto');
+            $no_urut= $this->request->getPost('no_urut');
+            $periode= $this->request->getPost('periode');
+            $data = array();
             
-        return redirect()->to(base_url('pasangan_calon'));
-            // $this->db->insert('nama_pasangan', $data); // Untuk mengeksekusi perintah insert data
-            // $this->db->insert('nama_pasangan', $data2); // Untuk mengeksekusi perintah insert data
+            $index = 0;
+            foreach($nama as $datanama){
+            array_push($data, array(
+                "nama_lengkap" =>$datanama,
+                "no_ktp" => $no_ktp[$index],
+                "jenis_kelamin" =>$jenis_kelamin[$index],
+                "tempat_lahir" =>$tempat_lahir[$index],
+                "tanggal_lahir" =>$tanggal_lahir[$index],
+                "alamat_lengkap" =>$alamat_lengkap[$index],
+                "pekerjaan" =>$pekerjaan[$index],
+                "agama" =>$agama[$index],
+                "kawin" =>$kawin[$index],
+                "email" =>$email[$index],
+                "no_hp" =>$no_hp[$index],
+                "foto" => $foto[$index],
+                // "no_urut" => $no_urut,
+                // "periode" => $periode,
+                //"id_provinsi" =>$id_provinsi
+            ));
+            
+            $index++;
+            }
+        
+        //$this->adminmodel->createCalon($data);
+        // Cek apakah query insert nya sukses atau gagal
+        // if($sql){ // Jika sukses
+        //   echo "<script>alert('Data berhasil disimpan');window.location = '".base_url('index.php/siswa')."';</script>";
+        // }else{ // Jika gagal
+        //   echo "<script>alert('Data gagal disimpan');window.location = '".base_url('index.php/siswa/form')."';</script>";
+        // }
+            
+            echo "<pre>";
+            print_r($data1);
+            echo "</pre>";
+
+            echo "<pre>";
+            print_r($data2);
+            echo "</pre>";
+    
+            // return redirect()->to(base_url('pasangan_calon'));
+            }
         }else { return redirect()->to(base_url('/'));}
     } 
     // end createCalon

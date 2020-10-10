@@ -39,6 +39,9 @@
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
   <script src="assets/js/script.js"></script>
+  <!-- Sweet Alert 2 -->
+  <script src="<?= base_url()?>/plugins/sweetalert2/sweetalert2.all.min.js"></script>
+  
 </head>
 
 <?= $this->include('menu/header'); ?>
