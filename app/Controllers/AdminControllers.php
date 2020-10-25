@@ -205,13 +205,19 @@ class AdminControllers extends BaseController
             AND g.id_suara = a.id_suara AND g.status = 0
             AND a.id_suara = '".$id_suara."'")->getResultArray();
             
+            foreach ($data as $y){
+                $base64_string = $y->c1;
+                }
+            $image = '<img src="data:image/png;base64,' . $base64_string . '"  width="relative" height="958" style="opacity: .8" />';
+            
             $active = 'suara_masuk';
             return view('admin/form_validasi', [
                 'active'    => $active,
                 'data'      => $data,
                 'cekgrafik' => 0,
                 'user'      => $user,
-                'pasangan'  => $pasangan
+                'pasangan'  => $pasangan,
+                'image'     => $image
                 ]);
 
             }else if($cek->cek == 1 && $cek->admin == $user){
@@ -230,13 +236,19 @@ class AdminControllers extends BaseController
                 AND g.id_suara = a.id_suara AND g.status = 0
                 AND a.id_suara = '".$id_suara."'")->getResultArray();
                 
+                foreach ($data as $y){
+                    $base64_string = $y->c1;
+                    }
+                $image = '<img src="data:image/png;base64,' . $base64_string . '"  width="relative" height="958" style="opacity: .8" />';
+
                 $active = 'suara_masuk';
                 return view('admin/form_validasi', [
                     'active'    => $active,
                     'data'      => $data,
                     'cekgrafik' => 0,
                     'user'      => $user,
-                    'pasangan'  => $pasangan
+                    'pasangan'  => $pasangan,
+                    'image'     => $image
                     ]);
     
             }else {
@@ -382,7 +394,7 @@ class AdminControllers extends BaseController
                 'data'      => $data,
                 'cekgrafik' => 0,
                 'user'      => $user,
-                'last_valid'=> $last->pengirim,
+                'last_valid'=> $last->pengirim
                 ]);
         }else {return redirect()->to(base_url('/'));}
     }
@@ -406,6 +418,11 @@ class AdminControllers extends BaseController
             AND c.id_pasangan = d.id_pasangan AND e.id_calon = d.ketua AND f.id_calon = d.wakil 
             AND g.id_suara = a.id_suara AND g.status = 1
             AND a.id_suara = '".$id_suara."'")->getResultArray();
+
+            foreach ($data as $y){
+                $base64_string = $y->c1;
+                }
+            $image = '<img src="data:image/png;base64,' . $base64_string . '"  width="relative" height="958" style="opacity: .8" />';
             
             $active = 'suara_validasi';
             return view('admin/detail_suara', [
@@ -413,7 +430,8 @@ class AdminControllers extends BaseController
                 'data'      => $data,
                 'cekgrafik' => 0,
                 'user'      => $user,
-                'pasangan'  => $pasangan
+                'pasangan'  => $pasangan,
+                'image'     => $image
                 ]);
 
         }else {return redirect()->to(base_url('/'));}
@@ -623,13 +641,13 @@ class AdminControllers extends BaseController
             $index++;
             }
         
-        //$this->adminmodel->createCalon($data);
-        // Cek apakah query insert nya sukses atau gagal
-        // if($sql){ // Jika sukses
-        //   echo "<script>alert('Data berhasil disimpan');window.location = '".base_url('index.php/siswa')."';</script>";
-        // }else{ // Jika gagal
-        //   echo "<script>alert('Data gagal disimpan');window.location = '".base_url('index.php/siswa/form')."';</script>";
-        // }
+        $this->adminmodel->createCalon($data);
+        //Cek apakah query insert nya sukses atau gagal
+        if($sql){ // Jika sukses
+          echo "<script>alert('Data berhasil disimpan');window.location = '".base_url('index.php/siswa')."';</script>";
+        }else{ // Jika gagal
+          echo "<script>alert('Data gagal disimpan');window.location = '".base_url('index.php/siswa/form')."';</script>";
+        }
             
             echo "<pre>";
             print_r($data1);

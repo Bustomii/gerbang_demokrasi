@@ -87,7 +87,7 @@
                      <p>Suara Rusak :<?= $value['suara_tidak_sah']?>
                    </td>
                    <td><center><a href='/c1/<?= $value['c1'] ?>'><span><button title="Lihat c1" type="button" class="btn btn"><span class="fas fa-eye"></span></button></span></td>
-                   <td><center><?php if ($value['status']==0) {echo '<span class="badge bg-danger">Belum Validasi</span>';}else{echo '<span class="badge bg-success">Validasi</span>';}?></td>
+                   <td><center><?php if ($value['status']==0 AND $value['cek']==0) {echo '<span class="badge bg-danger">Belum Validasi</span>';}else if ($value['status']==0 AND $value['cek']==1){echo '<span class="badge bg-warning">Sedang Dievaluasi Oleh : '.$value['admin'].'</span>';}else{echo '<span class="badge bg-success">Validasi</span>';}?></td>
                    <td><center>
                        <a href='/suara_masuk/<?= $value['id_suara'] ?>'><span><button title="Validasi" type="button" class="btn btn-success"><span class="fas fa-check"></span></button></span>
                        <a href='/suara_masuk/hapus/<?= $value['id_suara'] ?>'><span><button title="Hapus" type="button" class="btn btn-danger"><span class="fas fa-trash-alt"></span></button></span>

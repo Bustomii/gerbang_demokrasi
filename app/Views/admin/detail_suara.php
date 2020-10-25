@@ -38,8 +38,8 @@
                   <div class="card-header">
                     <h3 class="card-title col-sm-6">FORM C1</h3> 
                   </div> 
-                    <img src="<?php echo base_url("images/icon.png")?>" width="relative" height="958" style="opacity: .8">
-                </div>  
+                  <?= $image?>
+                  </div>  
               </div>
               <!-- end left card -->
               <!-- right card -->
